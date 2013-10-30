@@ -1,4 +1,20 @@
-work_space_env
+My Workspace congiguration file
 ==============
 
-My Work Space environment
+Configuration file includ:
+
+shell rc scripts:
+    bashrc
+    alias
+    env
+    edit mode
+    ... etc
+
+screen rc script:
+    screenrc
+
+vim rc script:
+    vimrc
+
+global git configuration (username, alias)
+    gitconfig

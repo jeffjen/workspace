@@ -1,0 +1,43 @@
+# ------------------------------------------------------------------------------
+# SCREEN SETTINGS
+# ------------------------------------------------------------------------------
+
+# don't show gnu screen license stuff
+startup_message off
+# defflow on # will force screen to process ^S/^Q
+deflogin on
+# don't show eye bleeding flashing
+vbell off
+# scroll back buffer set to a large number
+defscrollback 20000
+
+multiuser on
+autodetach on
+
+# ------------------------------------------------------------------------------
+# SCREENS KEYBINDINGS
+# ------------------------------------------------------------------------------
+
+# Remove some stupid / dangerous key bindings
+bind ^k
+bind ^\
+bind \\ quit
+bind K kill
+bind I login on
+bind O login off
+bind } history
+# utility key bindings
+bind ^r screen -t maserati ssh -Y $USER@maserati
+
+# ------------------------------------------------------------------------------
+# SCREEN STATUS AREA
+# ------------------------------------------------------------------------------
+caption always "%{gk}%-w%{+b}%{yk}= %n %t =%{-b}%{gk}%+w"
+hardstatus alwayslastline "%{b}%{kR}%H %{kW}| %{kY}%c%A %m/%d/%y %{kW}| %=%{kG}%l"
+
+
+# ------------------------------------------------------------------------------
+# STARTING SCREENS
+# ------------------------------------------------------------------------------
+screen -t admin 0
+screen -t host 1
