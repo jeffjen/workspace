@@ -84,23 +84,23 @@ alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo
 # You may want to put all your additions into a separate file like
 # ~/.bash_aliases, instead of adding them here directly.
 # See /usr/share/doc/bash-doc/examples in the bash-doc package.
-if [ -f ~/.workspace/bash_aliases ]; then
-    . ~/.workspace/bash_aliases
+if [ -f ~/.workspaceenv/bash_aliases ]; then
+    . ~/.workspaceenv/bash_aliases
 fi
 
 # definition for environment setup
-if [ -f ~/.workspace/bash_env ]; then
-    . ~/.workspace/bash_env
+if [ -f ~/.workspaceenv/bash_env ]; then
+    . ~/.workspaceenv/bash_env
 fi
 
-# definition for.workspace commandline editing
-if [ -f ~/.workspace/bash_editmode ]; then
-    . ~/.workspace/bash_editmode
+# definition for.workspaceenv commandline editing
+if [ -f ~/.workspaceenv/bash_editmode ]; then
+    . ~/.workspaceenv/bash_editmode
 fi
 
 # definition for convenience wrapper
-if [ -f ~/.workspace/bash_function ]; then
-    . ~/.workspace/bash_function
+if [ -f ~/.workspaceenv/bash_function ]; then
+    . ~/.workspaceenv/bash_function
 fi
 
 # enable programmable completion features (you don't need to enable
