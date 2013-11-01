@@ -4,3 +4,5 @@ EDITOR=vim
 PATH=~/bin:~/bin/android-ndk-r8e:~/lib/android-sdk-linux/platform-tools:~/lib/android-sdk-linux/tools:$PATH
 
 USE_CCACHE=1
+
+GIT_PS1_SHOWDIRTYSTATE=1
