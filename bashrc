@@ -109,3 +109,8 @@ fi
 if [ -f /etc/bash_completion ] && ! shopt -oq posix; then
     . /etc/bash_completion
 fi
+
+# enable local rc setup
+if [ -f ~/.bash/bash_rc ]; then
+    . ~/.bash/bash_rc
+fi
