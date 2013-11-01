@@ -71,8 +71,10 @@ set number 	" show line numbers
 set tw=79 	" width of document (used by gd)
 set nowrap 	" don't automatically wrap on load
 set fo-=t 	" don't automatically wrap text when typing
-set colorcolumn=80
-highlight ColorColumn ctermbg=100
+if version >= 703
+    set colorcolumn=80
+    highlight ColorColumn ctermbg=100
+endif
 
 " toggle line number on/off
 map <F8> :set invnumber<CR>
