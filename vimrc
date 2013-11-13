@@ -115,6 +115,8 @@ set laststatus=2
 " Settings for ctrlp
 " git clone git://github.com/kien/ctrlp.vim.git
 let g:ctrlp_cmd = 'CtrlP'
+let g:ctrlp_max_files = 0
+let g:ctrlp_max_depth = 100
 let g:ctrlp_max_height = 10
 let g:ctrlp_working_path_mode = 'ra'
 let g:ctrlp_custom_ignore = {
