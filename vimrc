@@ -97,6 +97,10 @@ set incsearch
 set ignorecase
 set smartcase
 
+" Make swiching bufferes better
+" Open in used tab if already opened, or open in new tab
+set switchbuf+=usetab,newtab
+
 "" Colo scheme
 "" mkdir -p ~/.vim/colors && cd ~/.vim/colors
 set t_Co=256
