@@ -156,8 +156,8 @@ endfunction
 inoremap <silent><C-j> <C-R>=OmniPopup('j')<CR>
 inoremap <silent><C-k> <C-R>=OmniPopup('k')<CR>
 
-" Python folding
-" mkdir -p ~/.vim/ftplugin
-set nofoldenable
+"" Python folding
+"" mkdir -p ~/.vim/ftplugin
+"set nofoldenable
 
 au BufRead,BufNewFile bash-fc-* set filetype=sh
