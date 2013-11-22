@@ -1,0 +1,65 @@
+#!/bin/bash
+
+adb start-server ||
+{
+    echo "Unable to start Android debugger bridge";
+    echo "bail out...";
+    exit 1;
+}
+
+connected=()
+while read device type
+do
+    if [[ $device = 'List' ]]
+    then
+        continue
+    else
+        connected=("${connected[@]}" $device)
+    fi
+done < <(adb devices)
+echo -e "Install to following devices: ${connected[@]}\n"
+
+for projDir in $@
+do
+    # jump into spcified project directory
+    pushd $projDir >/dev/null || exit $?
+    proj=$(sed -n '2p' build.xml | sed -n 's/<.*name="\(\w\(-\?\w\)\+\)".*>/\1/p')
+    [ ! -z $proj ] ||
+    {
+        echo -e "Unable to detect build file";
+        echo -e "\tSkip project in $projDir...";
+        # jump out of it
+        { popd >/dev/null; continue; } || exit -1
+    }
+    projs=("${projs[@]}" $proj)
+
+    # clean -> build -> install
+    ant clean && ant debug && \
+    for device in ${connected[@]}
+    do
+        adb -s $device install -r bin/$proj-debug.apk || exit 1
+    done ||
+    {
+        # crap out if any step failed
+        echo -e "Unexpected Failure occurred";
+        exit -2;
+    }
+
+    #if [[ $proj =~ ^.*Test/?$ ]] # FIXME: this needs to change to meet new naming convention
+    #then
+    #    ant test >&1 | tee $projDir.log
+
+    #    # FIXME there should be a better way to check test log
+    #    grep -iq -e 'FAILURES' -e 'ERRORS' $projDir.log && exit 1
+
+    #    echo -e "\nTest of $proj complete\n"
+    #fi
+
+    # jump out of it
+    popd >/dev/null || exit $?
+done
+
+if [[ ${#projs[@]} != 0 ]]
+then
+    echo -e "\n${projs[@]} built!!"
+fi

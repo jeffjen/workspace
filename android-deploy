@@ -1,0 +1,26 @@
+#!/bin/bash
+
+adb start-server || 
+{
+    echo "Unable to start Android debugger bridge";
+    echo "bail out...";
+    exit 1;
+}
+
+connected=()
+while read device type
+do
+    if [[ $device = 'List' ]]
+    then
+        continue
+    else
+        connected=("${connected[@]}" $device)
+    fi
+done < <(adb devices)
+echo -e "Install to following devices: ${connected[@]}\n"
+
+
+for device in ${connected[@]}
+do
+    adb -s $device install -r $1 || exit 1
+done
