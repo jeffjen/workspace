@@ -6,3 +6,5 @@ PATH=~/bin:~/bin/android-ndk-r8e:~/lib/android-sdk-linux/platform-tools:~/lib/an
 USE_CCACHE=1
 
 GIT_PS1_SHOWDIRTYSTATE=1
+
+TERM=xterm-256color
