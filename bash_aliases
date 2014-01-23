@@ -10,9 +10,4 @@ alias cd...='cd ../../../'
 alias cd....='cd ../../../../'
 alias cd.....='cd ../../../../../'
 
-alias egrep='egrep --color'
-
-alias maserati='ssh -Y $USER@maserati'
-alias vbox='ssh -Y $USER@jeffjen-VirtualBox.local'
-
 alias cp='cp -v'
