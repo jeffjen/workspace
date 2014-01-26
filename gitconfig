@@ -9,3 +9,5 @@
 [user]
     name = Jeffrey Jen
     email = yihungjen@gmail.com
+[push]
+	default = simple
