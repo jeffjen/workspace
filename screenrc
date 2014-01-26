@@ -4,8 +4,8 @@
 
 # don't show gnu screen license stuff
 startup_message off
-# defflow on # will force screen to process ^S/^Q
-deflogin on
+## defflow on # will force screen to process ^S/^Q
+#deflogin on
 # don't show eye bleeding flashing
 vbell off
 # scroll back buffer set to a large number
@@ -23,11 +23,9 @@ bind ^k
 bind ^\
 bind \\ quit
 bind K kill
-bind I login on
-bind O login off
+#bind I login on
+#bind O login off
 bind } history
-# utility key bindings
-bind ^r screen -t maserati ssh -Y $USER@maserati
 
 # ------------------------------------------------------------------------------
 # SCREEN STATUS AREA
