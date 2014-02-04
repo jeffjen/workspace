@@ -2,8 +2,4 @@
 
 EDITOR=vim
 
-USE_CCACHE=1
-
 GIT_PS1_SHOWDIRTYSTATE=1
-
-TERM=xterm-256color
