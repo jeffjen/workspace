@@ -32,6 +32,8 @@ inoremap <C-x> <C-C>:update<CR>
 " Quick quit command
 noremap <Leader>e :quit<CR>
 noremap <Leader>E :qa<CR>
+"noremap <Leader>k :q!<CR>
+"noremap <Leader>K :qa!<CR>
 
 " bind Ctrl+<movement> keys to move around the windows,
 " instead of using Ctrl+w + <movement>
@@ -112,9 +114,19 @@ colorscheme wombat256mod
 ""set nowritebackup
 ""set noswapfile
 
-" Settings for vim-powerline
-" git clone git://github.com/Lokaltog/vim-powerline.git
-set laststatus=2
+" Settings for powerline
+" git clone git://github.com/Lokaltog/vim-powerline.git [deprecated]
+" see [https://powerline.readthedocs.org/en/latest/index.html]
+set laststatus=2 " Always show the statusline in all window
+set noshowmode " Hide the default mode text (e.g. -- INSERT -- below the statusline)
+if ! has('gui_running')
+    set ttimeoutlen=10
+    augroup FastEscape
+        autocmd!
+        au InsertEnter * set timeoutlen=0
+        au InsertLeave * set timeoutlen=1000
+    augroup END
+endif
 
 " Settings for ctrlp
 " git clone git://github.com/kien/ctrlp.vim.git
