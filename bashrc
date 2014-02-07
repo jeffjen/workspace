@@ -75,17 +75,21 @@ force_color_prompt=yes
 
 if [ -n "$force_color_prompt" ]; then
     if [ -x /usr/bin/tput ] && tput setaf 1 >&/dev/null; then
-	# We have color support; assume it's compliant with Ecma-48
-	# (ISO/IEC-6429). (Lack of such support is extremely rare, and such
-	# a case would tend to support setf rather than setaf.)
-	color_prompt=yes
+        # We have color support; assume it's compliant with Ecma-48
+        # (ISO/IEC-6429). (Lack of such support is extremely rare, and such
+        # a case would tend to support setf rather than setaf.)
+        color_prompt=yes
     else
-	color_prompt=
+        color_prompt=
     fi
 fi
 
 if [ "$color_prompt" = yes ]; then
-    PS1='${my_chroot:+($my_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\][\w]\[\033[00m\]$(__git_ps1)\n>> '
+    if test "$UID" -ne 0; then
+        PS1='${my_chroot:+($my_chroot)}\e[1;32m\u@\h\e[m:\e[1;34m[\w]\e[m$(__git_ps1)\n>> '
+    else
+        PS1='${my_chroot:+($my_chroot)}\e[0;31m\u@\h\e[m:\e[1;34m[\w]\e[m$(__git_ps1)\n>> '
+    fi
 else
     PS1='${my_chroot:+($my_chroot)}\u@\h:[\w]$(__git_ps1)\n>> '
 fi
