@@ -29,6 +29,11 @@ noremap <C-x> :update<CR>
 vnoremap <C-x> <C-C>:update<CR>
 inoremap <C-x> <C-C>:update<CR>
 
+" Quick new tab
+noremap <C-s> :tabe<CR>
+vnoremap <C-s> <C-C>:tabe<CR>
+inoremap <C-s> <C-C>:tabe<CR>
+
 " Quick quit command
 noremap <Leader>e :quit<CR>
 noremap <Leader>E :qa<CR>
