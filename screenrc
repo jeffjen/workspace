@@ -44,4 +44,4 @@ hardstatus alwayslastline "%{b}%{kR}%H %{kW}| %{kY}%c%A %m/%d/%y %{kW}| %=%{kG}%
 # STARTING SCREENS
 # ------------------------------------------------------------------------------
 screen -t admin 0
-screen -t host 1
+screen -t dev 1
