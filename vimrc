@@ -39,6 +39,7 @@ noremap <Leader>e :quit<CR>
 noremap <Leader>E :qa<CR>
 noremap <Leader>k :q!<CR>
 noremap <Leader>K :qa!<CR>
+noremap <Leader>t :tabnew<CR>
 
 " bind Ctrl+<movement> keys to move around the windows,
 " instead of using Ctrl+w + <movement>
