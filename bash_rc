@@ -5,8 +5,7 @@ alias grep="grep --color=auto"
 alias egrep="egrep --color=auto"
 alias fgrep="fgrep --color=auto"
 
-source /etc/bash_completion.d/git-prompt
-source /usr/share/bash-completion/completions/git
+source /etc/bash_completion.d/git
 
 PATH=~/bin:/home/jeffjen/java/jdk1.7.0_45/bin:$PATH
 JAVA_HOME=/home/jeffjen/java/jdk1.7.0_45
