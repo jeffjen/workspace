@@ -180,3 +180,4 @@ inoremap <silent><C-k> <C-R>=OmniPopup('k')<CR>
 "set nofoldenable
 
 au BufRead,BufNewFile bash-fc-* set filetype=sh
+au BufRead,BufNewFile *.wsgi set filetype=python
