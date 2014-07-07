@@ -143,7 +143,7 @@ let g:ctrlp_max_height = 10
 let g:ctrlp_working_path_mode = 'ra'
 let g:ctrlp_follow_symlinks = 1
 let g:ctrlp_custom_ignore = {
-  \ 'dir':  '\v[\/]\.(git|hg|svn)$',
+  \ 'dir':  '\v[\/]\.(git|hg|svn|venv)$',
   \ 'file': '\v\.(pyc|class|o|sw*|iml|properties)$',
   \ }
 
