@@ -181,3 +181,4 @@ inoremap <silent><C-k> <C-R>=OmniPopup('k')<CR>
 
 au BufRead,BufNewFile bash-fc-* set filetype=sh
 au BufRead,BufNewFile *.wsgi set filetype=python
+au BufRead,BufNewFile *.thrift set filetype=cpp
