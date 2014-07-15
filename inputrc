@@ -1,0 +1,4 @@
+# This file defines how command line interaction is used
+
+# set readline enabled tools to use vi edit mode
+set editing-mode vi
