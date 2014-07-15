@@ -1,0 +1,35 @@
+#!/bin/bash
+
+run()
+{
+    id=$1
+    rlog=$2
+    elog=$3
+    shift 3
+    command="$@"
+    condition=0
+    while [ $condition -eq 0 ]
+    do
+        #sleep $(( RANDOM % 10 + 3 ))
+        $command >>$rlog 2>>$elog
+        condition=$?
+    done
+    date >>$elog
+}
+
+count=$1
+shift 1
+for i in $(seq $count)
+do
+    id=$i
+    while [ -f run.$id.log ]
+    do
+        id=$(( id + 1 ))
+    done
+    rlog=run.$id.log
+    touch $rlog
+    elog=error.$id.log
+    touch $elog
+    run $id $rlog $elog "$@" &
+    echo $! >>run_demo.pid
+done
