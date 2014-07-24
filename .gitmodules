@@ -16,3 +16,6 @@
 [submodule "vim/bundle/vim-javascript-syntax"]
 	path = vim/bundle/vim-javascript-syntax
 	url = https://github.com/jelera/vim-javascript-syntax.git
+[submodule "gdb_pprint"]
+	path = gdb_pprint
+	url = git@bitbucket.org:yihungjen/libstdcxx-v3-python-mirror.git
