@@ -56,11 +56,6 @@ if [ -f ~/.workspaceenv/bash_function ]; then
     . ~/.workspaceenv/bash_function
 fi
 
-# set variable identifying the chroot you work in (used in the prompt below)
-if [ -z "$my_chroot" ] && [ -r /etc/debian_chroot ]; then
-    my_chroot=$(cat /etc/debian_chroot)
-fi
-
 # set a fancy prompt (non-color, unless we know we "want" color)
 case "$TERM" in
     xterm-color) color_prompt=yes;;
@@ -84,12 +79,12 @@ fi
 
 if [ "$color_prompt" = yes ]; then
     if test "$UID" -ne 0; then
-        PS1='${my_chroot:+($my_chroot)}\e[1;32m\u@\h\e[m:\e[1;34m[\w]\e[m$(__git_ps1)\n>> '
+        PS1="\[\e[00;32m\]\u\[\e[0m\]\[\e[00;37m\]@\[\e[0m\]\[\e[00;36m\]\h\[\e[0m\]\[\e[00;37m\][\w]\e[m\$(__git_ps1) {\[\e[0m\]\[\e[00;32m\]\$?\[\e[0m\]\[\e[00;37m\]}\n>> \[\e[0m\]"
     else
-        PS1='${my_chroot:+($my_chroot)}\e[0;31m\u@\h\e[m:\e[1;34m[\w]\e[m$(__git_ps1)\n>> '
+        PS1="\[\e[00;31m\]\u\[\e[0m\]\[\e[00;37m\]@\[\e[0m\]\[\e[00;36m\]\h\[\e[0m\]\[\e[00;37m\][\w]\e[m\$(__git_ps1) {\[\e[0m\]\[\e[00;32m\]\$?\[\e[0m\]\[\e[00;37m\]}\n>> \[\e[0m\]"
     fi
 else
-    PS1='${my_chroot:+($my_chroot)}\u@\h:[\w]$(__git_ps1)\n>> '
+    PS1="\[\e[00;37m\]\u@\h[\w]\e[m\$(__git_ps1) {\$?}\n>> \[\e[0m\]"
 fi
 PS2='.. '
 unset color_prompt force_color_prompt
