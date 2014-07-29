@@ -26,6 +26,7 @@ do
     do
         id=$(( id + 1 ))
     done
+    export RUNNER=$id
     rlog=run.$id.log
     touch $rlog
     elog=error.$id.log
