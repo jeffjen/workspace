@@ -10,7 +10,7 @@ run()
     condition=0
     while [ $condition -eq 0 ]
     do
-        #sleep $(( RANDOM % 10 + 3 ))
+        [ ! -z $SLEEP ] && sleep $(( RANDOM % SLEEP + 1 ))
         $command >>$rlog 2>>$elog
         condition=$?
     done
