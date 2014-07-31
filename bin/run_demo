@@ -29,6 +29,7 @@ do
     export RUNNER=$id
     rlog=run.$id.log
     touch $rlog
+    echo -e "----\n$@\n----" >>$rlog
     elog=error.$id.log
     touch $elog
     run $id $rlog $elog "$@" &
