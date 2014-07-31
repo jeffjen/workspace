@@ -1,0 +1,4 @@
+#!/bin/bash
+
+PYTHONPATH=$HOME/.workspaceenv/push-notification:$PYTHONPATH
+$HOME/.workspaceenv/push-notification/push "$@"
