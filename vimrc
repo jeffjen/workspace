@@ -143,7 +143,7 @@ let g:ctrlp_max_height = 10
 let g:ctrlp_working_path_mode = 'ra'
 let g:ctrlp_follow_symlinks = 1
 let g:ctrlp_custom_ignore = {
-  \ 'dir':  '\v[\/]\.(git|hg|svn|venv)$',
+  \ 'dir':  '\v[\/]\.(git|hg|svn)$',
   \ 'file': '\v\.(pyc|class|o|sw*|iml|properties)$',
   \ }
 
@@ -182,3 +182,5 @@ inoremap <silent><C-k> <C-R>=OmniPopup('k')<CR>
 au BufRead,BufNewFile bash-fc-* set filetype=sh
 au BufRead,BufNewFile *.wsgi set filetype=python
 au BufRead,BufNewFile *.thrift set filetype=cpp
+
+call localrc#load('.local.vimrc', getcwd())
