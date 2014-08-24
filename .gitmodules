@@ -22,3 +22,6 @@
 [submodule "push-notification"]
 	path = push-notification
 	url = git@bitbucket.org:yihungjen/push-notification.git
+[submodule "vim/bundle/localrc.vim"]
+	path = vim/bundle/localrc.vim
+	url = https://github.com/vim-scripts/localrc.vim.git
