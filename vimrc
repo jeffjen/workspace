@@ -32,7 +32,10 @@ inoremap <C-x> <C-C>:update<CR>
 " Quick new tab
 noremap <C-s> :tabe<CR>
 vnoremap <C-s> <C-C>:tabe<CR>
-inoremap <C-s> <C-C>:tabe<CR>
+
+" Quick toggle paste mode
+noremap <C-y> <esc>:set paste!<CR>
+vnoremap <C-y> <esc>:set paste!<CR>
 
 " Quick quit command
 noremap <Leader>e :quit<CR>
@@ -142,10 +145,11 @@ let g:ctrlp_max_depth = 100
 let g:ctrlp_max_height = 10
 let g:ctrlp_working_path_mode = 'ra'
 let g:ctrlp_follow_symlinks = 1
-let g:ctrlp_custom_ignore = {
-  \ 'dir':  '\v[\/]\.(git|hg|svn)$',
-  \ 'file': '\v\.(pyc|class|o|sw*|iml|properties)$',
-  \ }
+"let g:ctrlp_custom_ignore = {
+"  \ 'dir':  '\v[\/]\.(git|hg|svn)$',
+"  \ 'file': '\v\.(pyc|class|o|sw*|iml|properties)$',
+"  \ }
+let g:ctrlp_root_markers = ['.ctrlp']
 
 "" Settings for python-mode
 "" git clone https://github.com/klen/python-mode
