@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<settings>
+    <servers>
+        <!-- deploy target OSSRH Sonatype maven central -->
+        <server>
+            <id>ossrh</id>
+            <username>yihungjen</username>
+            <password>{66HKIT1QyiAHh2uSp0gp//RskIIiX8OqZnNtyvBVIvI=}</password>
+        </server>
+    </servers>
+    <profiles>
+        <!-- setup additional repos from Sonatype OSSRH -->
+        <profile>
+            <id>ossrh</id>
+            <repositories>
+                <repository>
+                    <id>ossrh</id>
+                    <name>Sonatype OSSRH builds</name>
+                    <url>https://oss.sonatype.org/content/groups/public/</url>
+                </repository>
+            </repositories>
+        </profile>
+    </profiles>
+    <activeProfiles>
+        <activeProfile>ossrh</activeProfile>
+    </activeProfiles>
+</settings>
