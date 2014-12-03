@@ -11,3 +11,5 @@ alias cd....='cd ../../../../'
 alias cd.....='cd ../../../../../'
 
 alias cp='cp -v'
+
+alias mv='mv -v'
