@@ -1,0 +1,9 @@
+/var/log/package/*.log {
+    copytruncate
+    missingok
+    notifempty
+    compress
+    weekly
+    rotate 2
+    size 250k
+}

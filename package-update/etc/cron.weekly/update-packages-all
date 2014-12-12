@@ -1,0 +1,14 @@
+#!/bin/bash
+
+set -e
+
+logpath=/var/log/package
+logfile=update.log
+log=$logpath/$logfile
+[ -d $logpath ] || mkdir -p $logpath
+
+echo "============================" &>>$log
+date &>>$log
+apt-get update &>>$log
+apt-get upgrade -y &>>$log
+echo -e "Available update (if any) upgraded\n" &>>$log
