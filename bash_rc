@@ -9,3 +9,10 @@ source /etc/bash_completion.d/git-prompt
 source /usr/share/bash-completion/completions/git
 
 PATH=~/bin:~/.local/bin:$PATH
+
+__reboot_ps1 ()
+{
+    if [ -f /var/run/reboot-required ]; then
+        echo " (reboot)"
+    fi
+}
