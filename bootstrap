@@ -1,0 +1,12 @@
+#!/bin/bash
+
+WORKSPACEENV_ROOT=${HOME}/.workspaceenv
+
+SETTINGS_FILE="bashrc bash_rc inputrc gdbinit gitconfig screenrc vimrc vim"
+
+cd ${WORKSPACEENV_ROOT} &&
+    git submodule update --init &&
+    for config in ${SETTINGS_FILE}; do
+        ln -sf ${WORKSPACEENV_ROOT}/${config} ${HOME}/.${config}
+    done &&
+    ln -sf ${WORKSPACEENV_ROOT}/bin ${HOME}/bin
