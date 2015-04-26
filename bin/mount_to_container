@@ -1,0 +1,26 @@
+#!/bin/bash
+
+set -e
+CONTAINER=${1:?'Need to specify container to mount to'}
+HOSTPATH=${2:?'Need to specify host path to attach'}
+CONTPATH=${3:?'Need to specify container path to attach to'}
+
+REALPATH=$(readlink --canonicalize $HOSTPATH)
+FILESYS=$(df -P $REALPATH | tail -n 1 | awk '{print $6}')
+
+while read DEV JUNK MOUNT JUNK
+do
+    [ $MOUNT = $FILESYS ] && break
+done < <(mount)
+
+SUBPATH=$(echo $REALPATH | sed s,^$FILESYS,,)
+DEVDEC=$(printf "%d %d" $(stat --format "0x%t 0x%T" $DEV))
+
+docker-enter $CONTAINER sh -c \
+         "[ -b $DEV ] || mknod --mode 0600 $DEV b $DEVDEC"
+docker-enter $CONTAINER mkdir /tmpmnt
+docker-enter $CONTAINER mount $DEV /tmpmnt
+docker-enter $CONTAINER mkdir -p $CONTPATH
+docker-enter $CONTAINER mount -o bind /tmpmnt/$SUBPATH $CONTPATH
+docker-enter $CONTAINER umount /tmpmnt
+docker-enter $CONTAINER rmdir /tmpmnt
