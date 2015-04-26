@@ -1,17 +1,14 @@
-My Workspace congiguration file
-==============
+Workspace congiguration file
+===============================
 
-shell rc scripts  
-> bashrc  
-> alias  
-> env  
-> edit mode  
+tl;dr
+-----
 
-screen rc script  
-> screenrc
+Unpack/Clone workspace tarball/repo and run bootstrap
+Clear dependencies as you go
 
-vim rc script  
-> vimrc
+About Security
+--------------
 
-global git configuration (username, alias)  
-> gitconfig
+SSH private key, AWS API secret and what not shall be stored elsewhere and
+mount to their appropriate volume where they make sense
