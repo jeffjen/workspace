@@ -10,7 +10,6 @@ RUN apt-get update && apt-get upgrade -y && apt-get install -y \
     gdb \
     git \
     git-svn \
-    golang \
     libssl-dev \
     libreadline-dev \
     make \
@@ -25,6 +24,9 @@ RUN apt-get update && apt-get upgrade -y && apt-get install -y \
     screen \
     vim \
     zlib1g-dev
+
+# install golang pacakge
+RUN curl -sSL https://storage.googleapis.com/golang/go1.4.2.linux-amd64.tar.gz | tar -C /usr/local -zxf -
 
 # install docker client (but sadly has docker daemon in there)
 RUN curl -sSL https://get.docker.com/ | sh
@@ -61,8 +63,13 @@ COPY . /home/yihungjen/.workspaceenv
 # setup workspace with bootsrap command
 RUN env HOME=/home/yihungjen .workspaceenv/bootstrap
 
+RUN mkdir -p /home/yihungjen/goroot/src /home/yihungjen/goroot/bin /home/yihungjen/goroot/pkg
+
 # make sure permission is correct
 RUN chown -R yihungjen:yihungjen ./
+
+ENV GOPATH /home/yihungjen/goroot
+ENV PATH /home/yihungjen/goroot/bin:/home/yihungjen/bin:/usr/local/go/bin:$PATH
 
 # VOLUME hooks for security settings
 VOLUME /home/yihungjen/.aws
