@@ -25,6 +25,13 @@ RUN apt-get update && apt-get upgrade -y && apt-get install -y \
     vim \
     zlib1g-dev
 
+# setup nodejs pkg source
+RUN curl -sSL https://deb.nodesource.com/setup | bash
+# ... and then why didn't it just go ahead and install this
+RUN apt-get install nodejs
+# ... and again it doesn't update the npm to latest from deb pkg
+RUN npm install npm -g
+
 # install golang pacakge
 RUN curl -sSL https://storage.googleapis.com/golang/go1.4.2.linux-amd64.tar.gz | tar -C /usr/local -zxf -
 
