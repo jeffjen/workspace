@@ -70,13 +70,11 @@ COPY . /home/yihungjen/.workspaceenv
 # setup workspace with bootsrap command
 RUN env HOME=/home/yihungjen .workspaceenv/bootstrap
 
-RUN mkdir -p /home/yihungjen/goroot/src /home/yihungjen/goroot/bin /home/yihungjen/goroot/pkg
-
 # make sure permission is correct
 RUN chown -R yihungjen:yihungjen ./
 
-ENV GOPATH /home/yihungjen/goroot
-ENV PATH /home/yihungjen/goroot/bin:/home/yihungjen/bin:/usr/local/go/bin:$PATH
+ENV GOPATH /home/yihungjen/go_root
+ENV PATH /home/yihungjen/go_root/bin:/home/yihungjen/bin:/usr/local/go/bin:$PATH
 
 # VOLUME hooks for security settings
 VOLUME /home/yihungjen/.aws
