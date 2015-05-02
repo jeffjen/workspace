@@ -28,7 +28,7 @@ RUN apt-get update && apt-get upgrade -y && apt-get install -y \
 # setup nodejs pkg source
 RUN curl -sSL https://deb.nodesource.com/setup | bash
 # ... and then why didn't it just go ahead and install this
-RUN apt-get install nodejs
+RUN apt-get install -y nodejs
 # ... and again it doesn't update the npm to latest from deb pkg
 RUN npm install npm -g
 
