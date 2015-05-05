@@ -57,7 +57,7 @@ RUN pip install \
 RUN gem install kensa
 
 # the user that will run this container
-RUN useradd -s /bin/bash -d /home/yihungjen -G sudo -m yihungjen
+RUN useradd -s /bin/bash -d /home/yihungjen -G sudo,docker -m yihungjen
 RUN echo "yihungjen:!@mYihungJ3n" | chpasswd
 
 WORKDIR /home/yihungjen
