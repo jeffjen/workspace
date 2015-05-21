@@ -13,3 +13,5 @@
 	default = matching
 [core]
 	editor = vim
+[svn]
+    rmdir = true
