@@ -56,6 +56,10 @@ RUN pip install \
 # install kensa helper tool
 RUN gem install kensa
 
+# install command line json parser
+RUN curl -sSL http://stedolan.github.io/jq/download/linux64/jq -o /usr/local/bin/jq
+RUN chmod +x /usr/local/bin/jq
+
 # the user that will run this container
 RUN useradd -s /bin/bash -d /home/yihungjen -G sudo,docker -m yihungjen
 RUN echo "yihungjen:!@mYihungJ3n" | chpasswd
