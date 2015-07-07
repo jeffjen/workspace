@@ -16,14 +16,14 @@ RUN apt-get update && apt-get upgrade -y && apt-get install -y \
 
 # setup nodejs pkg source
 RUN curl -sSL https://deb.nodesource.com/setup | bash
-# ... and then why didn't it just go ahead and install this
 RUN apt-get install -y nodejs
 
 # install golang pacakge
 RUN curl -sSL https://storage.googleapis.com/golang/go1.4.2.linux-amd64.tar.gz | tar -C /usr/local -zxf -
 
-# install docker client (but sadly has docker daemon in there)
-RUN curl -sSL https://get.docker.com/ | sh
+# install docker client
+RUN curl -sSL https://get.docker.com/builds/Windows/x86_64/docker-latest.exe > /usr/local/bin/docker
+RUN chmod +x /usr/local/bin/docker
 
 # install package manager for python
 RUN curl -sSL https://bootstrap.pypa.io/get-pip.py | python -
@@ -56,8 +56,9 @@ RUN env HOME=/home/yihungjen .workspaceenv/bootstrap
 # make sure permission is correct
 RUN chown -R yihungjen:yihungjen ./
 
-ENV GOPATH /home/yihungjen/go_root
-ENV PATH /home/yihungjen/go_root/bin:/home/yihungjen/bin:/usr/local/go/bin:$PATH
+ENV GOROOT /usr/local/go
+ENV GOPATH /home/yihungjen/go
+ENV PATH /home/yihungjen/go/bin:/home/yihungjen/bin:/usr/local/go/bin:$PATH
 
 # VOLUME hooks for security settings
 VOLUME /home/yihungjen/.aws
