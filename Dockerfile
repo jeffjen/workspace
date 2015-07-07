@@ -40,6 +40,7 @@ RUN curl -sSL http://stedolan.github.io/jq/download/linux64/jq -o /usr/local/bin
 RUN chmod +x /usr/local/bin/jq
 
 # the user that will run this container
+RUN groupadd -g 999 docker 
 RUN useradd -s /bin/bash -d /home/yihungjen -G sudo,docker -m yihungjen
 RUN echo "yihungjen:!@mYihungJ3n" | chpasswd
 
