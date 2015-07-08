@@ -22,7 +22,7 @@ RUN apt-get install -y nodejs
 RUN curl -sSL https://storage.googleapis.com/golang/go1.4.2.linux-amd64.tar.gz | tar -C /usr/local -zxf -
 
 # install docker client
-RUN curl -sSL https://get.docker.com/builds/Windows/x86_64/docker-latest.exe > /usr/local/bin/docker
+RUN curl -sSL https://get.docker.com/builds/Linux/x86_64/docker-latest > /usr/local/bin/docker
 RUN chmod +x /usr/local/bin/docker
 
 # install package manager for python
