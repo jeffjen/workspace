@@ -25,6 +25,10 @@ RUN curl -sSL https://storage.googleapis.com/golang/go1.4.2.linux-amd64.tar.gz |
 RUN curl -sSL https://get.docker.com/builds/Linux/x86_64/docker-latest > /usr/local/bin/docker
 RUN chmod +x /usr/local/bin/docker
 
+# install docker machine client
+RUN curl -sSL https://github.com/docker/machine/releases/download/v0.3.0/docker-machine_linux-amd64 > /usr/local/bin/docker-machine
+RUN chmod +x /usr/local/bin/docker-machine
+
 # install package manager for python
 RUN curl -sSL https://bootstrap.pypa.io/get-pip.py | python -
 
@@ -40,7 +44,7 @@ RUN curl -sSL http://stedolan.github.io/jq/download/linux64/jq -o /usr/local/bin
 RUN chmod +x /usr/local/bin/jq
 
 # the user that will run this container
-RUN groupadd -g 999 docker 
+RUN groupadd -g 999 docker
 RUN useradd -s /bin/bash -d /home/yihungjen -G sudo,docker -m yihungjen
 RUN echo "yihungjen:!@mYihungJ3n" | chpasswd
 
