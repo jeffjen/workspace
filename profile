@@ -24,3 +24,5 @@ fi
 sudo chown yihungjen:yihungjen /dev/console
 
 export SHELL=/bin/bash
+
+[[ $TERM == "screen" ]] && export -p TERM="screen-256color"

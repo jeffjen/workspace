@@ -2,7 +2,7 @@
 
 WORKSPACEENV_ROOT=${HOME}/.workspaceenv
 
-SETTINGS_FILE="bashrc bash_rc inputrc gdbinit gitconfig screenrc vimrc vim"
+SETTINGS_FILE="bashrc bash_rc inputrc gdbinit gitconfig screenrc vimrc vim tmux.conf"
 
 cd ${WORKSPACEENV_ROOT} &&
     git submodule update --init &&
