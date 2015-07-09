@@ -8,6 +8,7 @@ RUN apt-get update && apt-get upgrade -y && apt-get install -y \
     gdb \
     git \
     git-svn \
+    htop \
     make \
     python \
     python-dev \
