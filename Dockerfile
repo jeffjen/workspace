@@ -10,6 +10,7 @@ RUN apt-get update && apt-get upgrade -y && apt-get install -y \
     git-svn \
     htop \
     make \
+    man \
     python \
     python-dev \
     screen \
