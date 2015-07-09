@@ -12,6 +12,7 @@ RUN apt-get update && apt-get upgrade -y && apt-get install -y \
     python \
     python-dev \
     screen \
+    tmux \
     vim
 
 # setup nodejs pkg source
