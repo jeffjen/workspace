@@ -21,8 +21,6 @@ if [ -d "$HOME/bin" ] ; then
     PATH="$HOME/bin:$PATH"
 fi
 
-sudo chown yihungjen:yihungjen /dev/console
-
 export SHELL=/bin/bash
 
 export -p TERM="screen-256color"

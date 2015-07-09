@@ -52,6 +52,7 @@ RUN echo "yihungjen:!@mYihungJ3n" | chpasswd
 
 WORKDIR /home/yihungjen
 
+COPY entrypoint.sh /entrypoint.sh
 COPY profile ./.profile
 
 # get instance of workspaceenv for workspace configuration
@@ -73,4 +74,5 @@ VOLUME /home/yihungjen/.gnupg
 VOLUME /home/yihungjen/.m2
 VOLUME /home/yihungjen/.ssh
 
+ENTRYPOINT ["/entrypoint.sh"]
 CMD ["/bin/bash", "-l"]
