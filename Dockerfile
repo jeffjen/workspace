@@ -15,7 +15,8 @@ RUN apt-get update && apt-get upgrade -y && apt-get install -y \
     python-dev \
     screen \
     tmux \
-    vim
+    vim \
+    xclip
 
 # setup nodejs pkg source
 RUN curl -sSL https://deb.nodesource.com/setup | bash
