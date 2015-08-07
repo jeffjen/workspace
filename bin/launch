@@ -1,0 +1,19 @@
+#!/bin/bash
+
+WORKSPACE=${1:?"need name for the workspace"}
+
+shift 1
+
+VOLUMES_FROM="$@"
+
+docker run -it --name ${WORKSPACE} -u yihungjen ${VOLUMES_FROM} \
+    -v /var/run/docker.sock:/var/run/docker.sock \
+    -v ${PWD}/go:/home/yihungjen/go \
+    -v ${PWD}/node:/home/yihungjen/node \
+    -v ${PWD}/workspace:/home/yihungjen/workspace \
+    -v ${PWD}/tmp:/tmp \
+    -v ${PWD}/.ssh:/home/yihungjen/.ssh \
+    -v ${PWD}/.aws:/home/yihungjen/.aws \
+    -v ${PWD}/.m2:/home/yihungjen/.m2 \
+    -v ${PWD}/.gnupg:/home/yihungjen/.gnupg \
+    jeffjen/workspace
