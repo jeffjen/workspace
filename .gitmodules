@@ -16,9 +16,6 @@
 [submodule "vim/bundle/vim-javascript-syntax"]
 	path = vim/bundle/vim-javascript-syntax
 	url = https://github.com/jelera/vim-javascript-syntax.git
-[submodule "push-notification"]
-	path = push-notification
-	url = https://bitbucket.org/yihungjen/push-notification.git
 [submodule "vim/bundle/localrc.vim"]
 	path = vim/bundle/localrc.vim
 	url = https://github.com/vim-scripts/localrc.vim.git
