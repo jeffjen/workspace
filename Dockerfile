@@ -21,6 +21,7 @@ RUN apt-get update && apt-get upgrade -y && apt-get install -y \
 # setup nodejs pkg source
 RUN curl -sSL https://deb.nodesource.com/setup | bash
 RUN apt-get install -y nodejs
+RUN npm install -g jade bower
 
 # install golang pacakge
 RUN curl -sSL https://storage.googleapis.com/golang/go1.4.2.linux-amd64.tar.gz | tar -C /usr/local -zxf -
