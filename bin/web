@@ -1,0 +1,20 @@
+#!/bin/bash
+
+COMMAND="$@"
+PORT=80
+
+while [ $# -gt 0 ]; do
+    case ${1} in
+        -p)
+            shift 1; PORT=${1}; shift 1
+            ;;
+        *)
+            echo "unable to proceed: web $COMMAND"
+            echo "USAGE: web [-p PORT]"
+            exit 1
+            ;;
+    esac
+done
+
+# Go serve that sucker at wd!
+python -m SimpleHTTPServer $PORT
