@@ -7,7 +7,7 @@ shift 1
 VOLUMES_FROM="$@"
 
 docker run -it --name ${WORKSPACE} -u yihungjen ${VOLUMES_FROM} \
-    -p 4040:4040 -p 5050:5050 -p 8080:8080 -p 9090:9090 \
+    -p 4040:4040 -p 8080:8080 \
     -v /var/run/docker.sock:/var/run/docker.sock \
     -v ${PWD}/go:/home/yihungjen/go \
     -v ${PWD}/node:/home/yihungjen/node \
