@@ -146,7 +146,7 @@ let g:ctrlp_max_height = 10
 let g:ctrlp_working_path_mode = 'ra'
 let g:ctrlp_follow_symlinks = 1
 let g:ctrlp_custom_ignore = {
-  \ 'dir':  '\v[\/](Godeps|\.venv|\.git|\.hg|\.svn)$',
+  \ 'dir':  '\v[\/](node_modules|Godeps|\.venv|\.git|\.hg|\.svn)$',
   \ 'file': '\v\.(pyc|class|o|sw*|iml|properties)$',
   \ }
 let g:ctrlp_root_markers = ['.ctrlp']
