@@ -11,6 +11,7 @@ RUN apt-get update && apt-get upgrade -y && apt-get install -y \
     htop \
     make \
     man \
+    openjdk-7-jdk \
     python \
     python-dev \
     screen \
