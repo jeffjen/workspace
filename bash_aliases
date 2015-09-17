@@ -13,3 +13,6 @@ alias cd.....='cd ../../../../../'
 alias cp='cp -v'
 
 alias mv='mv -v'
+
+alias pbcopy='xsel --clipboard --input'
+alias pbpaste='xsel --clipboard --output'

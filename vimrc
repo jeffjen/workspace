@@ -7,16 +7,19 @@ autocmd! bufwritepost .vimrc source %
 " Now you can install vim plugin into ~/.vim/bundle/<plugin-name>
 call pathogen#infect()
 
+" Rebind <Leader> key
+let mapleader = ","
+
 " Better copy & paste
 set pastetoggle=<F2>
-set clipboard=unnamed
+set clipboard=unnamedplus
+
+" Quick copy to clipboard
+nnoremap <Leader>y "*y
 
 " Mouse and Backspace
 " set mouse=a
 set bs=2
-
-" Rebind <Leader> key
-let mapleader = ","
 
 "" Bind nohl
 "" Remove highlight of your last search
