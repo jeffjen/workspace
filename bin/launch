@@ -4,15 +4,17 @@ WORKSPACE=${1:?"need name for the workspace"}
 
 shift 1
 
-VOLUMES_FROM="$@"
+DOCKER_RUN_OPTS="$@"
 
-docker run -it --name ${WORKSPACE} -u yihungjen ${VOLUMES_FROM} \
-    -p 4040:4040 -p 8080:8080 \
-    -v /var/run/docker.sock:/var/run/docker.sock \
+docker run -it --name ${WORKSPACE} -u yihungjen \
+    --net=host -e DISPLAY ${DOCKER_RUN_OPTS} \
+    -v /tmp:/tmp \
+    -v /etc/hostname:/etc/hostname \
+    -v /etc/hosts:/etc/hosts \
+    -v ${HOME}/.Xauthority:/home/yihungjen/.Xauthority \
     -v ${PWD}/go:/home/yihungjen/go \
     -v ${PWD}/node:/home/yihungjen/node \
     -v ${PWD}/workspace:/home/yihungjen/workspace \
-    -v ${PWD}/tmp:/tmp \
     -v ${PWD}/.ssh:/home/yihungjen/.ssh \
     -v ${PWD}/.aws:/home/yihungjen/.aws \
     -v ${PWD}/.m2:/home/yihungjen/.m2 \
