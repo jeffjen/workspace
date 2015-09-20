@@ -14,12 +14,17 @@ RUN apt-get update && apt-get upgrade -y && apt-get install -y \
     openjdk-7-jdk \
     python \
     python-dev \
+    ruby \
+    ruby-dev \
     screen \
     tmux \
     vim \
     vim-gtk \
     xclip \
-    xsel
+    xsel \
+    zip \
+    zlib1g \
+    zlib1g-dev
 
 # setup nodejs pkg source
 RUN curl -sSL https://deb.nodesource.com/setup | bash
@@ -45,7 +50,8 @@ RUN pip install \
     ipython \
     requests \
     awscli \
-    powerline-status
+    powerline-status \
+    virtualenv
 
 # install command line json parser
 RUN curl -sSL http://stedolan.github.io/jq/download/linux64/jq -o /usr/local/bin/jq
