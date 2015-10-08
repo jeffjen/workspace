@@ -27,9 +27,8 @@ RUN apt-get update && apt-get upgrade -y && apt-get install -y \
     zlib1g-dev
 
 # setup nodejs pkg source
-RUN curl -sSL https://deb.nodesource.com/setup | bash
-RUN apt-get install -y nodejs
-RUN npm install -g jade bower
+RUN curl -sSL https://nodejs.org/dist/v4.1.2/node-v4.1.2-linux-x64.tar.gz | tar -C /usr/local -zxf -
+RUN mv /usr/local/node-v4.1.2-linux-x64 /usr/local/node
 
 # install golang pacakge
 RUN curl -sSL https://storage.googleapis.com/golang/go1.4.2.linux-amd64.tar.gz | tar -C /usr/local -zxf -
@@ -78,7 +77,7 @@ RUN chown -R yihungjen:yihungjen ./
 
 ENV GOROOT /usr/local/go
 ENV GOPATH /home/yihungjen/go
-ENV PATH /home/yihungjen/go/bin:/home/yihungjen/bin:/usr/local/go/bin:$PATH
+ENV PATH /home/yihungjen/go/bin:/home/yihungjen/bin:/usr/local/go/bin:/usr/local/node/bin:$PATH
 
 # VOLUME hooks for security settings
 VOLUME /home/yihungjen/.aws
