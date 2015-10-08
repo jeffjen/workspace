@@ -31,7 +31,7 @@ RUN curl -sSL https://nodejs.org/dist/v4.1.2/node-v4.1.2-linux-x64.tar.gz | tar 
 RUN mv /usr/local/node-v4.1.2-linux-x64 /usr/local/node
 
 # install golang pacakge
-RUN curl -sSL https://storage.googleapis.com/golang/go1.4.2.linux-amd64.tar.gz | tar -C /usr/local -zxf -
+RUN curl -sSL https://storage.googleapis.com/golang/go1.5.1.linux-amd64.tar.gz | tar -C /usr/local -zxf -
 
 # install docker client
 RUN curl -sSL https://get.docker.com/builds/Linux/x86_64/docker-latest > /usr/local/bin/docker
