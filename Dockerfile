@@ -29,6 +29,7 @@ RUN apt-get update && apt-get upgrade -y && apt-get install -y \
 # setup nodejs pkg source
 RUN curl -sSL https://nodejs.org/dist/v4.1.2/node-v4.1.2-linux-x64.tar.gz | tar -C /usr/local -zxf -
 RUN mv /usr/local/node-v4.1.2-linux-x64 /usr/local/node
+RUN /usr/local/node/bin/npm install -g bower
 
 # install golang pacakge
 RUN curl -sSL https://storage.googleapis.com/golang/go1.5.1.linux-amd64.tar.gz | tar -C /usr/local -zxf -
