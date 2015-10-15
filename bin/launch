@@ -4,19 +4,25 @@ WORKSPACE=${1:?"need name for the workspace"}
 
 shift 1
 
+BIND_VOLUMES=
 DOCKER_RUN_OPTS="$@"
 
+BASH_HISTORY=${PWD}/.bash_history
+[ -f ${BASH_HISTORY} ] || touch ${BASH_HISTORY}
+BIND_VOLUMES="${BIND_VOLUMES} -v ${BASH_HISTORY}:/home/yihungjen/.bash_history"
+
+X_AUTHORITY=${HOME}/.Xauthority
+[ -f ${X_AUTHORITY} ] || touch ${X_AUTHORITY}
+BIND_VOLUMES="${BIND_VOLUMES} -v ${X_AUTHORITY}:/home/yihungjen/.Xauthority"
+
+for p in go node workspace .ssh .aws .m2 .gnupg
+do
+    [ -e ${PWD}/${p} ] && BIND_VOLUMES="${BIND_VOLUMES} -v ${PWD}/${p}:/home/yihungjen/${p}"
+done
+
 docker run -it --name ${WORKSPACE} -u yihungjen \
-    --net=host -e DISPLAY ${DOCKER_RUN_OPTS} \
+    --net=host -e DISPLAY ${DOCKER_RUN_OPTS} ${BIND_VOLUMES} \
     -v /tmp:/tmp \
     -v /etc/hostname:/etc/hostname \
     -v /etc/hosts:/etc/hosts \
-    -v ${HOME}/.Xauthority:/home/yihungjen/.Xauthority \
-    -v ${PWD}/go:/home/yihungjen/go \
-    -v ${PWD}/node:/home/yihungjen/node \
-    -v ${PWD}/workspace:/home/yihungjen/workspace \
-    -v ${PWD}/.ssh:/home/yihungjen/.ssh \
-    -v ${PWD}/.aws:/home/yihungjen/.aws \
-    -v ${PWD}/.m2:/home/yihungjen/.m2 \
-    -v ${PWD}/.gnupg:/home/yihungjen/.gnupg \
     jeffjen/workspace
