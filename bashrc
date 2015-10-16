@@ -79,12 +79,12 @@ fi
 
 if [ "$color_prompt" = yes ]; then
     if test "$UID" -ne 0; then
-        PS1="\[\e[00;32m\]\u\[\e[0m\]\[\e[00;37m\]@\[\e[0m\]\[\e[00;36m\]\h\[\e[0m\]\[\e[00;37m\][\w] {\[\e[0m\]\[\e[00;32m\]\$?\[\e[0m\]\[\e[00;37m\]}\e[m\$(__git_ps1)$(__reboot_ps1)\n>> \[\e[0m\]"
+        PS1="\[\033[38;5;2m\]\u\[$(tput sgr0)\]\[\033[38;5;15m\]@\[$(tput sgr0)\]\[\033[38;5;4m\]\h\[$(tput sgr0)\]\[\033[38;5;15m\][\w] {\[$(tput sgr0)\]\[\033[38;5;2m\]\$?\[$(tput sgr0)\]\[\033[38;5;15m\]}\$(__git_ps1)\$(__reboot_ps1)\n>> \[$(tput sgr0)\]"
     else
-        PS1="\[\e[00;31m\]\u\[\e[0m\]\[\e[00;37m\]@\[\e[0m\]\[\e[00;36m\]\h\[\e[0m\]\[\e[00;37m\][\w] {\[\e[0m\]\[\e[00;32m\]\$?\[\e[0m\]\[\e[00;37m\]}\e[m\$(__git_ps1)$(__reboot_ps1)\n>> \[\e[0m\]"
+        PS1="\[\033[38;5;1m\]\u\[$(tput sgr0)\]\[\033[38;5;15m\]@\[$(tput sgr0)\]\[\033[38;5;4m\]\h\[$(tput sgr0)\]\[\033[38;5;15m\][\w] {\[$(tput sgr0)\]\[\033[38;5;2m\]\$?\[$(tput sgr0)\]\[\033[38;5;15m\]}\$(__git_ps1)\$(__reboot_ps1)\n>> \[$(tput sgr0)\]"
     fi
 else
-    PS1="\[\e[00;37m\]\u@\h[\w] {\$?}\e[m\$(__git_ps1)$(__reboot_ps1)\n>> \[\e[0m\]"
+    PS1="\u@\h[\w] {\$?}\$(__git_ps1)\$(__reboot_ps1)\n>> \[$(tput sgr0)\]"
 fi
 PS2='.. '
 unset color_prompt force_color_prompt
