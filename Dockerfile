@@ -71,6 +71,9 @@ RUN groupadd -g 999 docker
 RUN useradd -s /bin/bash -d /home/yihungjen -G sudo,docker -m yihungjen
 RUN echo "yihungjen:!@mYihungJ3n" | chpasswd
 
+# setup local info
+RUN locale-gen en_US.UTF-8
+
 WORKDIR /home/yihungjen
 
 COPY entrypoint.sh /entrypoint.sh
