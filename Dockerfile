@@ -19,6 +19,7 @@ RUN apt-get update && apt-get upgrade -y && apt-get install -y \
     screen \
     socat \
     tmux \
+    telnet \
     vim \
     vim-gtk \
     xclip \
@@ -40,16 +41,8 @@ RUN curl -sSL https://get.docker.com/builds/Linux/x86_64/docker-latest > /usr/lo
 RUN chmod +x /usr/local/bin/docker
 
 # install docker-compose for local service stack orchestration
-RUN curl -sSL https://github.com/docker/compose/releases/download/1.4.2/docker-compose-Linux-x86_64 > /usr/local/bin/docker-compose
+RUN curl -sSL https://github.com/docker/compose/releases/download/1.5.1/docker-compose-Linux-x86_64 > /usr/local/bin/docker-compose
 RUN chmod +x /usr/local/bin/docker-compose
-
-# install docker machine client
-RUN curl -sSL https://github.com/docker/machine/releases/download/v0.4.1/docker-machine_linux-amd64 > /usr/local/bin/docker-machine
-RUN chmod +x /usr/local/bin/docker-machine
-
-# install AWS ECS cli for service stack orchestration
-RUN curl -sSL https://s3.amazonaws.com/amazon-ecs-cli/ecs-cli-linux-amd64-latest > /usr/local/bin/ecs-cli
-RUN chmod +x /usr/local/bin/ecs-cli
 
 # install package manager for python
 RUN curl -sSL https://bootstrap.pypa.io/get-pip.py | python -
