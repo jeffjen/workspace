@@ -1,0 +1,23 @@
+#!/bin/bash
+
+JOB_NAME=`basename ${PWD}`
+
+# specify build script at runtime
+cat >build.sh <<EOF
+#!/bin/sh
+go-wrapper download
+CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o ${JOB_NAME} .
+EOF
+
+# make it executable
+chmod +x build.sh
+
+# build our golang src in golang docker
+docker run --rm \
+    -v ${PWD}:/go/src/app \
+    -v ${PWD}/build.sh:/build.sh \
+    golang:1.5.1-onbuild \
+    /build.sh
+
+# clean up after ourselves
+rm -f build.sh
