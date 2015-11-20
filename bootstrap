@@ -1,12 +1,13 @@
 #!/bin/bash
 
-WORKSPACEENV_ROOT=${HOME}/.workspaceenv
-
 SETTINGS_FILE="bashrc bash_rc inputrc gitconfig screenrc vimrc vim tmux.conf"
 
-cd ${WORKSPACEENV_ROOT} &&
-    git submodule update --init &&
-    for config in ${SETTINGS_FILE}; do
-        ln -sf ${WORKSPACEENV_ROOT}/${config} ${HOME}/.${config}
-    done &&
-    ln -sf ${WORKSPACEENV_ROOT}/bin ${HOME}/bin
+if [ -d .git ]; then
+    git submodule update --init
+fi
+
+for config in ${SETTINGS_FILE}; do
+    ln -sf ${PWD}/${config} ${HOME}/.${config}
+done
+
+ln -sf ${PWD}/bin ${HOME}/bin

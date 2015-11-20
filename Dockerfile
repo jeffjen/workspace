@@ -67,19 +67,14 @@ RUN echo "yihungjen:!@mYihungJ3n" | chpasswd
 # setup local info
 RUN locale-gen en_US.UTF-8
 
-WORKDIR /home/yihungjen
-
 COPY entrypoint.sh /entrypoint.sh
 COPY profile ./.profile
 
 # get instance of workspaceenv for workspace configuration
 COPY . /home/yihungjen/.workspaceenv
-
 # setup workspace with bootsrap command
-RUN env HOME=/home/yihungjen .workspaceenv/bootstrap
-
-# make sure permission is correct
-RUN chown -R yihungjen:yihungjen ./
+WORKDIR /home/yihungjen/.workspaceenv
+RUN env HOME=/home/yihungjen ./bootstrap
 
 ENV GOROOT /usr/local/go
 ENV GOPATH /home/yihungjen/go
@@ -90,6 +85,10 @@ VOLUME /home/yihungjen/.aws
 VOLUME /home/yihungjen/.gnupg
 VOLUME /home/yihungjen/.m2
 VOLUME /home/yihungjen/.ssh
+
+# make sure permission is correct
+WORKDIR /home/yihungjen
+RUN chown -R yihungjen:yihungjen ./
 
 ENTRYPOINT ["/entrypoint.sh"]
 CMD ["/bin/bash", "-l"]
