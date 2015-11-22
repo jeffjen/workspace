@@ -1,6 +1,6 @@
 #!/bin/bash
 
-SETTINGS_FILE="bashrc bash_rc inputrc gitconfig screenrc vimrc vim tmux.conf"
+SETTINGS_FILE="bashrc bash_rc inputrc gitconfig screenrc vimrc vim tmux.conf profile"
 
 if [ -d .git ]; then
     git submodule update --init
