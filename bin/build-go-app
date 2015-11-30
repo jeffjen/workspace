@@ -15,6 +15,7 @@ chmod +x build.sh
 # build our golang src in golang docker
 docker run --rm \
     -v ${PWD}:/go/src/app \
+    -v ${PWD}:/go/src/${PWD##/*/src/} \
     -v ${PWD}/build.sh:/build.sh \
     golang:1.5.1-onbuild \
     /build.sh
