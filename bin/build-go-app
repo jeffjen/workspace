@@ -2,6 +2,8 @@
 
 JOB_NAME=`basename ${PWD}`
 
+BIND_OPTS=${1:-""}
+
 # specify build script at runtime
 cat >build.sh <<EOF
 #!/bin/sh
@@ -13,10 +15,7 @@ EOF
 chmod +x build.sh
 
 # build our golang src in golang docker
-docker run --rm \
-    -v ${PWD}:/go/src/app \
-    -v ${PWD}:/go/src/${PWD##/*/src/} \
-    -v ${PWD}/build.sh:/build.sh \
+docker run --rm -v ${PWD}:/go/src/app -v ${PWD}/build.sh:/build.sh ${BIND_OPTS} \
     golang:1.5.1-onbuild \
     /build.sh
 
