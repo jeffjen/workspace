@@ -55,6 +55,9 @@ RUN pip install \
     powerline-status \
     virtualenv
 
+# install maven
+RUN curl -sSL http://apache.stu.edu.tw/maven/maven-3/3.3.9/binaries/apache-maven-3.3.9-bin.tar.gz | tar -C /usr/local -zxf -
+
 # install command line json parser
 RUN curl -sSL http://stedolan.github.io/jq/download/linux64/jq -o /usr/local/bin/jq
 RUN chmod +x /usr/local/bin/jq
@@ -78,7 +81,7 @@ RUN env HOME=/home/yihungjen ./bootstrap
 
 ENV GOROOT /usr/local/go
 ENV GOPATH /home/yihungjen/go
-ENV PATH /home/yihungjen/go/bin:/home/yihungjen/bin:/usr/local/go/bin:/usr/local/node/bin:$PATH
+ENV PATH /home/yihungjen/go/bin:/home/yihungjen/bin:/usr/local/go/bin:/usr/local/node/bin:/usr/local/apache-maven-3.3.9/bin:$PATH
 
 # VOLUME hooks for security settings
 VOLUME /home/yihungjen/.aws
