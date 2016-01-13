@@ -7,7 +7,6 @@ RUN apt-get update && apt-get upgrade -y && apt-get install -y \
     g++ \
     gdb \
     git \
-    git-svn \
     htop \
     make \
     man \
@@ -16,7 +15,6 @@ RUN apt-get update && apt-get upgrade -y && apt-get install -y \
     python-dev \
     ruby \
     ruby-dev \
-    screen \
     socat \
     tmux \
     telnet \
