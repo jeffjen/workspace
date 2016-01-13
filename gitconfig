@@ -10,7 +10,7 @@
     name = Jeffrey Jen
     email = yihungjen@gmail.com
 [push]
-	default = matching
+	default = upstream
 [core]
 	editor = vim
 [svn]
