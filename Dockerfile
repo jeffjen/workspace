@@ -28,13 +28,12 @@ RUN apt-get update && apt-get upgrade -y && apt-get install -y \
     zlib1g \
     zlib1g-dev
 
-# setup nodejs pkg source
-RUN curl -sSL https://nodejs.org/dist/v4.1.2/node-v4.1.2-linux-x64.tar.gz | tar -C /usr/local -zxf -
-RUN mv /usr/local/node-v4.1.2-linux-x64 /usr/local/node
-RUN /usr/local/node/bin/npm install -g bower
+# setup local info
+RUN locale-gen en_US.UTF-8
 
-# install golang pacakge
-RUN curl -sSL https://storage.googleapis.com/golang/go1.5.1.linux-amd64.tar.gz | tar -C /usr/local -zxf -
+# install command line json parser
+RUN curl -sSL http://stedolan.github.io/jq/download/linux64/jq -o /usr/local/bin/jq
+RUN chmod +x /usr/local/bin/jq
 
 # install docker client
 RUN curl -sSL https://get.docker.com/builds/Linux/x86_64/docker-latest > /usr/local/bin/docker
@@ -43,6 +42,26 @@ RUN chmod +x /usr/local/bin/docker
 # install docker-compose for local service stack orchestration
 RUN curl -sSL https://github.com/docker/compose/releases/download/1.5.1/docker-compose-Linux-x86_64 > /usr/local/bin/docker-compose
 RUN chmod +x /usr/local/bin/docker-compose
+
+# install etcdctl
+RUN curl -sSL https://github.com/coreos/etcd/releases/download/v2.2.1/etcd-v2.2.1-linux-amd64.tar.gz | tar \
+    --transform "s@etcd-v2.2.1-linux-amd64@./@" \
+    -zxf - -C /usr/local/bin -- etcd-v2.2.1-linux-amd64/etcdctl
+
+# install maven
+RUN mkdir -p /usr/local/mvn
+RUN curl -sSL http://apache.stu.edu.tw/maven/maven-3/3.3.9/binaries/apache-maven-3.3.9-bin.tar.gz | tar \
+    --transform "s@apache-maven-3.3.9@./@" \
+    -zxf - -C /usr/local/mvn --
+
+# install nodejs
+RUN curl -sL https://deb.nodesource.com/setup_4.x | /bin/bash -
+RUN apt-get install -y nodejs
+
+# install common node packages
+RUN npm install -g \
+    bower \
+    mustache
 
 # install package manager for python
 RUN curl -sSL https://bootstrap.pypa.io/get-pip.py | python -
@@ -55,20 +74,13 @@ RUN pip install \
     powerline-status \
     virtualenv
 
-# install maven
-RUN curl -sSL http://apache.stu.edu.tw/maven/maven-3/3.3.9/binaries/apache-maven-3.3.9-bin.tar.gz | tar -C /usr/local -zxf -
-
-# install command line json parser
-RUN curl -sSL http://stedolan.github.io/jq/download/linux64/jq -o /usr/local/bin/jq
-RUN chmod +x /usr/local/bin/jq
+# install golang pacakge
+RUN curl -sSL https://storage.googleapis.com/golang/go1.5.1.linux-amd64.tar.gz | tar -C /usr/local -zxf -
 
 # the user that will run this container
 RUN groupadd -g 999 docker
 RUN useradd -s /bin/bash -d /home/yihungjen -G sudo,docker -m yihungjen
 RUN echo "yihungjen:!@mYihungJ3n" | chpasswd
-
-# setup local info
-RUN locale-gen en_US.UTF-8
 
 COPY entrypoint.sh /entrypoint.sh
 COPY profile ./.profile
@@ -81,7 +93,7 @@ RUN env HOME=/home/yihungjen ./bootstrap
 
 ENV GOROOT /usr/local/go
 ENV GOPATH /home/yihungjen/go
-ENV PATH /home/yihungjen/go/bin:/home/yihungjen/bin:/usr/local/go/bin:/usr/local/node/bin:/usr/local/apache-maven-3.3.9/bin:$PATH
+ENV PATH /home/yihungjen/go/bin:/home/yihungjen/bin:/usr/local/go/bin:/usr/local/mvn/bin:$PATH
 
 # VOLUME hooks for security settings
 VOLUME /home/yihungjen/.aws
