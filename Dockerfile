@@ -13,8 +13,8 @@ RUN apt-get update && apt-get upgrade -y && apt-get install -y \
     openjdk-7-jdk \
     python \
     python-dev \
-    ruby \
-    ruby-dev \
+    ruby2.0 \
+    ruby2.0-dev \
     socat \
     tmux \
     telnet \
