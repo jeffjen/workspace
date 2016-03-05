@@ -1,0 +1,3 @@
+#!/bin/bash
+
+docker run --rm -v ${PWD}:/workspace -p 8080:4000 jeffjen/jekyll $@
