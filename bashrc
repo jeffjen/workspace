@@ -56,6 +56,16 @@ if [ -f ~/.workspaceenv/bash_function ]; then
     . ~/.workspaceenv/bash_function
 fi
 
+# include github git-completion
+if [ -f ~/.workspaceenv/git-completion.bash ]; then
+    . ~/.workspaceenv/git-completion.bash
+fi
+
+# include github git-prompt
+if [ -f ~/.workspaceenv/git-prompt.sh ]; then
+    . ~/.workspaceenv/git-prompt.sh
+fi
+
 # set a fancy prompt (non-color, unless we know we "want" color)
 case "$TERM" in
     xterm-color) color_prompt=yes;;
