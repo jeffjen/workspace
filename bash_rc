@@ -6,7 +6,7 @@ if [ ${OS} = "Darwin" ]; then
     alias grep="grep -G"
     alias egrep="egrep -G"
     alias fgrep="fgrep -G"
-elif [ ${OS} = "Linux"]; then
+elif [ ${OS} = "Linux" ]; then
     alias ls="ls -h --color=auto"
     alias grep="grep --color=auto"
     alias egrep="egrep --color=auto"
