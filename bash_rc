@@ -1,12 +1,17 @@
 # Local rc setup for work environment
 
-alias ls="ls -h --color=auto"
-alias grep="grep --color=auto"
-alias egrep="egrep --color=auto"
-alias fgrep="fgrep --color=auto"
-
-source /etc/bash_completion.d/git-prompt
-source /usr/share/bash-completion/completions/git
+OS=`uname -s`
+if [ ${OS} = "Darwin" ]; then
+    alias ls="ls -h -G"
+    alias grep="grep -G"
+    alias egrep="egrep -G"
+    alias fgrep="fgrep -G"
+elif [ ${OS} = "Linux"]; then
+    alias ls="ls -h --color=auto"
+    alias grep="grep --color=auto"
+    alias egrep="egrep --color=auto"
+    alias fgrep="fgrep --color=auto"
+fi
 
 PATH=~/bin:~/.local/bin:$PATH
 
