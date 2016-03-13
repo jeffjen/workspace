@@ -14,5 +14,8 @@ alias cp='cp -v'
 
 alias mv='mv -v'
 
+OS=`uname -s`
+if [ ${OS} = "Linux" ]; then
 alias pbcopy='xsel --clipboard --input'
 alias pbpaste='xsel --clipboard --output'
+fi
