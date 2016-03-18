@@ -4,6 +4,7 @@ MAINTAINER YI-HUNG JEN <yihungjen@gmail.com>
 # install core components
 RUN apt-get update && apt-get upgrade -y && apt-get install -y \
     curl \
+    dnsutils \
     g++ \
     gdb \
     git \
