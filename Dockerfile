@@ -35,11 +35,12 @@ RUN curl -sSL http://stedolan.github.io/jq/download/linux64/jq -o /usr/local/bin
 RUN chmod +x /usr/local/bin/jq
 
 # install docker client
-RUN curl -sSL https://get.docker.com/builds/Linux/x86_64/docker-latest > /usr/local/bin/docker
-RUN chmod +x /usr/local/bin/docker
+RUN curl -sSL https://get.docker.com/builds/`uname -s`/`uname -m`/docker-1.11.0.tgz | tar \
+    --transform "s@docker@./@" \
+    -zxf - -C /usr/local/bin -- docker/docker
 
 # install docker-compose for local service stack orchestration
-RUN curl -sSL https://github.com/docker/compose/releases/download/1.5.1/docker-compose-Linux-x86_64 > /usr/local/bin/docker-compose
+RUN curl -sSL https://github.com/docker/compose/releases/download/1.7.0/docker-compose-`uname -s`-`uname -m` > /usr/local/bin/docker-compose
 RUN chmod +x /usr/local/bin/docker-compose
 
 # install etcdctl
