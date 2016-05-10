@@ -43,6 +43,10 @@ RUN curl -sSL https://get.docker.com/builds/`uname -s`/`uname -m`/docker-1.11.0.
 RUN curl -sSL https://github.com/docker/compose/releases/download/1.7.0/docker-compose-`uname -s`-`uname -m` > /usr/local/bin/docker-compose
 RUN chmod +x /usr/local/bin/docker-compose
 
+# install docker-machine
+RUN curl -L https://github.com/docker/machine/releases/download/v0.6.0/docker-machine-`uname -s`-`uname -m` > /usr/local/bin/docker-machine
+RUN chmod +x /usr/local/bin/docker-machine
+
 # install etcdctl
 RUN curl -sSL https://github.com/coreos/etcd/releases/download/v2.2.1/etcd-v2.2.1-linux-amd64.tar.gz | tar \
     --transform "s@etcd-v2.2.1-linux-amd64@./@" \
