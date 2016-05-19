@@ -1,4 +1,4 @@
-FROM ubuntu:latest
+FROM ubuntu:trusty
 MAINTAINER YI-HUNG JEN <yihungjen@gmail.com>
 
 # install core components
