@@ -21,6 +21,7 @@ RUN apt-get update && apt-get upgrade -y && apt-get install -y \
     telnet \
     vim \
     vim-gtk \
+    wget \
     xclip \
     xsel \
     zip \
