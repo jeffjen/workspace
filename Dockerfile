@@ -52,6 +52,12 @@ RUN curl -sSL https://github.com/coreos/etcd/releases/download/v2.2.1/etcd-v2.2.
     --transform "s@etcd-v2.2.1-linux-amd64@./@" \
     -zxf - -C /usr/local/bin -- etcd-v2.2.1-linux-amd64/etcdctl
 
+# install confd
+RUN curl -sSL https://github.com/kelseyhightower/confd/releases/download/v0.11.0/confd-0.11.0-linux-amd64 > /usr/local/bin/confd
+RUN chmod +x /usr/local/bin/confd
+# setup default confd backend config dir
+RUN mkdir -p /etc/confd
+
 # install maven
 RUN mkdir -p /usr/local/mvn
 RUN curl -sSL http://apache.stu.edu.tw/maven/maven-3/3.3.9/binaries/apache-maven-3.3.9-bin.tar.gz | tar \
