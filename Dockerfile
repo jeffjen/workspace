@@ -72,6 +72,7 @@ RUN apt-get install -y nodejs
 # install common node packages
 RUN npm install -g \
     bower \
+    gulp-cli \
     mustache
 
 # install package manager for python
