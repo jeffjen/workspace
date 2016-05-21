@@ -13,8 +13,6 @@ elif [ ${OS} = "Linux" ]; then
     alias fgrep="fgrep --color=auto"
 fi
 
-PATH=~/bin:~/.local/bin:$PATH
-
 __reboot_ps1 ()
 {
     if [ -f /var/run/reboot-required ]; then

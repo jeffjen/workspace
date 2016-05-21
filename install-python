@@ -1,0 +1,12 @@
+#!/bin/bash
+set -e
+
+apt-get update && apt-get install -y \
+    python \
+    python-dev
+
+# install package manager for python
+curl -sSL https://bootstrap.pypa.io/get-pip.py | python -
+
+# install common python packages
+pip install awscli ipython powerline-status virtualenv

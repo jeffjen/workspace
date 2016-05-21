@@ -1,0 +1,11 @@
+#!/bin/bash
+set -e
+
+# install golang pacakge
+curl -sSL https://storage.googleapis.com/golang/go1.5.4.linux-amd64.tar.gz | tar \
+    -C /usr/local \
+    -zxf -
+
+echo "export GOROOT=/usr/local/go" >>~/.workspaceenv/bash_env
+echo "export GOPATH=/home/yihungjen/go" >>~/.workspaceenv/bash_env
+echo "export PATH=/home/yihungjen/go/bin:/usr/local/go/bin:$PATH" >>~/.workspaceenv/bash_env

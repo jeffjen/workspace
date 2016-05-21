@@ -1,0 +1,19 @@
+#!/bin/bash
+set -e
+
+# install docker client
+curl -sSL https://get.docker.com/builds/`uname -s`/`uname -m`/docker-1.11.0.tgz | tar \
+    --transform "s@docker@./@" \
+    -zxf - -C /usr/local/bin -- docker/docker
+
+# install docker-compose for local service stack orchestration
+curl -sSL https://github.com/docker/compose/releases/download/1.7.0/docker-compose-`uname -s`-`uname -m` > /usr/local/bin/docker-compose
+chmod +x /usr/local/bin/docker-compose
+
+# install docker-machine
+curl -L https://github.com/docker/machine/releases/download/v0.6.0/docker-machine-`uname -s`-`uname -m` > /usr/local/bin/docker-machine
+chmod +x /usr/local/bin/docker-machine
+
+# setup group and permission for docker sock
+groupadd -g 999 docker
+usermod -aG docker yihungjen

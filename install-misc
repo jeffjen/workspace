@@ -1,0 +1,14 @@
+#!/bin/bash
+set -e
+
+# install etcdctl
+curl -sSL https://github.com/coreos/etcd/releases/download/v2.3.5/etcd-v2.3.5-linux-amd64.tar.gz | tar \
+    --transform "s@etcd-v2.3.5-linux-amd64@./@" \
+    -zxf - -C /usr/local/bin -- etcd-v2.3.5-linux-amd64/etcdctl
+
+# install confd
+curl -sSL https://github.com/kelseyhightower/confd/releases/download/v0.12.0-alpha3/confd-0.12.0-alpha3-linux-amd64 >/usr/local/bin/confd
+chmod +x /usr/local/bin/confd
+
+# setup default confd backend config dir
+mkdir -p /etc/confd
