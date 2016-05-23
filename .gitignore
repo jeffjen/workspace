@@ -1,3 +1,5 @@
-vim/.netrwhist
+# lock down on bash_env
+bash_env
 
+# ignore vim tmp object
 *.sw*
