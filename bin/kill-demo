@@ -1,6 +1,0 @@
-#!/bin/bash
-
-kill -9 `cat run_demo.pid`
-rm run_demo.pid
-rm error.*
-rm run.*
