@@ -15,8 +15,11 @@ X_AUTHORITY=${HOME}/.Xauthority
 [ -f ${X_AUTHORITY} ] || touch ${X_AUTHORITY}
 BIND_VOLUMES="${BIND_VOLUMES} -v ${X_AUTHORITY}:/home/yihungjen/.Xauthority"
 
-for p in go node workspace .ssh .aws .m2 .gnupg
-do
+for p in angular go node workspace; do
+    [ -e ${PWD}/${p} ] && BIND_VOLUMES="${BIND_VOLUMES} -v ${PWD}/${p}:/home/yihungjen/${p}"
+done
+
+for p in .ssh .aws .m2 .gnupg; do
     [ -e ${PWD}/${p} ] && BIND_VOLUMES="${BIND_VOLUMES} -v ${PWD}/${p}:/home/yihungjen/${p}"
 done
 
