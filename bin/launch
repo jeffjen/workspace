@@ -15,7 +15,7 @@ X_AUTHORITY=${HOME}/.Xauthority
 [ -f ${X_AUTHORITY} ] || touch ${X_AUTHORITY}
 BIND_VOLUMES="${BIND_VOLUMES} -v ${X_AUTHORITY}:/home/yihungjen/.Xauthority"
 
-for p in angular go node workspace; do
+for p in angular go node py workspace; do
     [ -e ${PWD}/${p} ] && BIND_VOLUMES="${BIND_VOLUMES} -v ${PWD}/${p}:/home/yihungjen/${p}"
 done
 
