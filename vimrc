@@ -153,6 +153,7 @@ let g:ctrlp_custom_ignore = {
   \ 'file': '\v\.(pyc|class|o|sw*|iml|properties)$',
   \ }
 let g:ctrlp_root_markers = ['.ctrlp']
+let g:ctrlp_user_command = ['.git', 'cd %s && git ls-files -co --exclude-standard']
 
 "" Settings for python-mode
 "" git clone https://github.com/klen/python-mode
