@@ -1,0 +1,5 @@
+#!/bin/bash
+set -e
+cwd=$(echo ${PWD} | sed -e "s@${GOPATH}@/go@")
+export CGO_ENABLED=0
+docker run --rm -v ${GOPATH}:/go -w ${cwd} -e CGO_ENABLED -e GOOS golang:1.6 go build -a -installsuffix cgo .
