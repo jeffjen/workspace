@@ -23,6 +23,10 @@ for p in .ssh .aws .m2 .gnupg .machine; do
     [ -e ${PWD}/${p} ] && BIND_VOLUMES="${BIND_VOLUMES} -v ${PWD}/${p}:/home/yihungjen/${p}"
 done
 
+for p in confd; do
+    [ -e ${PWD}/${p} ] && BIND_VOLUMES="${BIND_VOLUMES} -v ${PWD}/${p}:/etc/${p}"
+done
+
 docker run -it --name ${WORKSPACE} --net=host \
     -u yihungjen ${DOCKER_RUN_OPTS} ${BIND_VOLUMES} \
     -e DISPLAY -e GO15VENDOREXPERIMENT=1 -e SSH_AUTH_SOCK \
