@@ -8,6 +8,7 @@ apt-get update && apt-get install -y nodejs
 # install common node packages
 npm install -g \
     bower \
+    firebase-tools \
     gulp-cli \
     mustache \
     typescript
