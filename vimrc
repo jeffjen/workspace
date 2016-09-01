@@ -142,6 +142,7 @@ endif
 
 " Settings for ctrlp
 " git clone git://github.com/kien/ctrlp.vim.git
+let g:ctrlp_map = '<c-o>'
 let g:ctrlp_cmd = 'CtrlP'
 let g:ctrlp_max_files = 0
 let g:ctrlp_max_depth = 100
