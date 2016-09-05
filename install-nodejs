@@ -10,5 +10,6 @@ npm install -g \
     bower \
     firebase-tools \
     gulp-cli \
+    mocha \
     mustache \
     typescript
