@@ -1,0 +1,13 @@
+#!/usr/bin/env python
+
+from pytz import timezone
+
+import dateutil.parser
+import sys
+
+if __name__ == "__main__":
+    time_str = sys.argv[1]
+    print time_str
+    time_zone = sys.argv[2]
+    print time_zone
+    print dateutil.parser.parse(time_str).astimezone(timezone(time_zone))

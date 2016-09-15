@@ -9,4 +9,10 @@ apt-get update && apt-get install -y \
 curl -sSL https://bootstrap.pypa.io/get-pip.py | python -
 
 # install common python packages
-pip install awscli ipython powerline-status virtualenv
+pip install \
+    awscli \
+    ipython \
+    powerline-status \
+    virtualenv \
+    pytz \
+    python-dateutil
