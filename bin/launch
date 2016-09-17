@@ -23,7 +23,7 @@ for p in .ssh .aws .m2 .gnupg .machine; do
     [ -e ${PWD}/${p} ] && BIND_VOLUMES="${BIND_VOLUMES} -v ${PWD}/${p}:/home/yihungjen/${p}"
 done
 
-for p in confd; do
+for p in confd devops; do
     [ -e ${PWD}/${p} ] && BIND_VOLUMES="${BIND_VOLUMES} -v ${PWD}/${p}:/etc/${p}"
 done
 
