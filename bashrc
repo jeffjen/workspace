@@ -66,6 +66,11 @@ if [ -f ~/.workspaceenv/git-prompt.sh ]; then
     . ~/.workspaceenv/git-prompt.sh
 fi
 
+# include cli-completion
+if [ -f ~/.workspaceenv/cli-completion.bash ]; then
+    PROG=machine source ~/.workspaceenv/cli-completion.bash
+fi
+
 # set a fancy prompt (non-color, unless we know we "want" color)
 case "$TERM" in
     xterm-color) color_prompt=yes;;
