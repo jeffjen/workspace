@@ -1,0 +1,19 @@
+# include github git-completion
+if [ -f ~/.workspaceenv/git-completion.bash ]; then
+    . ~/.workspaceenv/git-completion.bash
+fi
+
+# include github git-prompt
+if [ -f ~/.workspaceenv/git-prompt.sh ]; then
+    . ~/.workspaceenv/git-prompt.sh
+fi
+
+# include machine completion
+if [ -f ~/.workspaceenv/machine-completion.bash ]; then
+    source ~/.workspaceenv/machine-completion.bash
+fi
+
+# include machine wrapper
+if [ -f ~/.workspaceenv/machine-wrapper.bash ]; then
+    source ~/.workspaceenv/machine-wrapper.bash
+fi
