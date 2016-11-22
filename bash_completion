@@ -17,3 +17,8 @@ fi
 if [ -f ~/.workspaceenv/machine-wrapper.bash ]; then
     source ~/.workspaceenv/machine-wrapper.bash
 fi
+
+# include machine prompt
+if [ -f ~/.workspaceenv/machine-prompt.bash ]; then
+    source ~/.workspaceenv/machine-prompt.bash
+fi
