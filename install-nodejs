@@ -2,7 +2,7 @@
 set -e
 
 # install nodejs
-curl -sL https://deb.nodesource.com/setup_4.x | /bin/bash -
+curl -sL https://deb.nodesource.com/setup_6.x | /bin/bash -
 apt-get update && apt-get install -y nodejs
 
 # install common node packages
