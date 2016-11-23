@@ -7,5 +7,5 @@ curl -sSL https://storage.googleapis.com/golang/go1.7.3.linux-amd64.tar.gz | tar
     -zxf -
 
 echo "export GOROOT=/usr/local/go" >>~/.workspaceenv/bash_env
-echo "export GOPATH=/home/yihungjen/go" >>~/.workspaceenv/bash_env
-echo "export PATH=/home/yihungjen/go/bin:/usr/local/go/bin:$PATH" >>~/.workspaceenv/bash_env
+echo "export GOPATH=${HOME}/go" >>~/.workspaceenv/bash_env
+echo "export PATH=${HOME}/go/bin:/usr/local/go/bin:${PATH}" >>~/.workspaceenv/bash_env
