@@ -22,3 +22,23 @@ fi
 if [ -f ~/.workspaceenv/machine-prompt.bash ]; then
     source ~/.workspaceenv/machine-prompt.bash
 fi
+
+# include docker-machine completion
+if [ -f ~/.workspaceenv/machine-completion.bash ]; then
+    source ~/.workspaceenv/docker-machine.bash
+fi
+
+# include docker-machine wrapper
+if [ -f ~/.workspaceenv/machine-wrapper.bash ]; then
+    source ~/.workspaceenv/docker-machine-wrapper.bash
+fi
+
+# include docker-machine prompt
+if [ -f ~/.workspaceenv/machine-prompt.bash ]; then
+    source ~/.workspaceenv/docker-machine-prompt.bash
+fi
+
+# include docker completion
+if [ -f ~/.workspaceenv/docker.bash ]; then
+    source ~/.workspaceenv/docker.bash
+fi
