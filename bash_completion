@@ -9,8 +9,8 @@ if [ -f ~/.workspaceenv/git-prompt.sh ]; then
 fi
 
 # include machine completion
-if [ -f ~/.workspaceenv/machine-completion.bash ]; then
-    source ~/.workspaceenv/machine-completion.bash
+if [ -f ~/.workspaceenv/machine.bash ]; then
+    source ~/.workspaceenv/machine.bash
 fi
 
 # include machine wrapper
