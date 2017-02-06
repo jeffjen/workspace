@@ -23,6 +23,8 @@
 # DOCKER_COMPLETION_SHOW_CONTAINER_IDS
 # DOCKER_COMPLETION_SHOW_NETWORK_IDS
 # DOCKER_COMPLETION_SHOW_NODE_IDS
+# DOCKER_COMPLETION_SHOW_PLUGIN_IDS
+# DOCKER_COMPLETION_SHOW_SECRET_IDS
 # DOCKER_COMPLETION_SHOW_SERVICE_IDS
 #   "no"  - Show names only (default)
 #   "yes" - Show names and ids
@@ -123,7 +125,7 @@ __docker_complete_container_ids() {
 	COMPREPLY=( $(compgen -W "${containers[*]}" -- "$cur") )
 }
 
-__docker_complete_images() {
+__docker_images() {
 	local images_args=""
 
 	case "$DOCKER_COMPLETION_SHOW_IMAGE_IDS" in
@@ -152,8 +154,11 @@ __docker_complete_images() {
 			;;
 	esac
 
-	local images=$(__docker_q images $images_args | awk "$awk_script")
-	COMPREPLY=( $(compgen -W "$images" -- "$cur") )
+	__docker_q images $images_args | awk "$awk_script" | grep -v '<none>$'
+}
+
+__docker_complete_images() {
+	COMPREPLY=( $(compgen -W "$(__docker_images)" -- "$cur") )
 	__ltrim_colon_completions "$cur"
 }
 
@@ -166,13 +171,6 @@ __docker_complete_image_repos_and_tags() {
 	local reposAndTags="$(__docker_q images | awk 'NR>1 && $1 != "<none>" { print $1; print $1":"$2 }')"
 	COMPREPLY=( $(compgen -W "$reposAndTags" -- "$cur") )
 	__ltrim_colon_completions "$cur"
-}
-
-__docker_complete_containers_and_images() {
-	__docker_complete_containers_all
-	local containers=( "${COMPREPLY[@]}" )
-	__docker_complete_images
-	COMPREPLY+=( "${containers[@]}" )
 }
 
 # __docker_networks returns a list of all networks. Additional options to
@@ -237,11 +235,13 @@ __docker_complete_volumes() {
 	COMPREPLY=( $(compgen -W "$(__docker_volumes "$@")" -- "$current") )
 }
 
-# __docker_plugins returns a list of all plugins of a given type.
+# __docker_plugins_bundled returns a list of all plugins of a given type.
 # The type has to be specified with the mandatory option `--type`.
 # Valid types are: Network, Volume, Authorization.
 # Completions may be added or removed with `--add` and `--remove`
-__docker_plugins() {
+# This function only deals with plugins that come bundled with Docker.
+# For plugins managed by `docker plugin`, see `__docker_plugins_installed`.
+__docker_plugins_bundled() {
 	local type add=() remove=()
 	while true ; do
 		case "$1" in
@@ -270,16 +270,47 @@ __docker_plugins() {
 	echo "${plugins[@]} ${add[@]}"
 }
 
-# __docker_complete_plugins applies completion of plugins based on the current
+# __docker_complete_plugins_bundled applies completion of plugins based on the current
 # value of `$cur` or the value of the optional first option `--cur`, if given.
 # The plugin type has to be specified with the next option `--type`.
-__docker_complete_plugins() {
+# This function only deals with plugins that come bundled with Docker.
+# For completion of plugins managed by `docker plugin`, see
+# `__docker_complete_plugins_installed`.
+__docker_complete_plugins_bundled() {
 	local current="$cur"
 	if [ "$1" = "--cur" ] ; then
 		current="$2"
 		shift 2
 	fi
-	COMPREPLY=( $(compgen -W "$(__docker_plugins "$@")" -- "$current") )
+	COMPREPLY=( $(compgen -W "$(__docker_plugins_bundled "$@")" -- "$current") )
+}
+
+# __docker_plugins_installed returns a list of all plugins that were installed with
+# the Docker plugin API.
+# By default, only names are returned.
+# Set DOCKER_COMPLETION_SHOW_PLUGIN_IDS=yes to also complete IDs.
+# For built-in pugins, see `__docker_plugins_bundled`.
+__docker_plugins_installed() {
+	local fields
+	if [ "$DOCKER_COMPLETION_SHOW_PLUGIN_IDS" = yes ] ; then
+		fields='$1,$2'
+	else
+		fields='$2'
+	fi
+	__docker_q plugin ls | awk "NR>1 {print $fields}"
+}
+
+# __docker_complete_plugins_installed applies completion of plugins that were installed
+# with the Docker plugin API, based on the current value of `$cur` or the value of
+# the optional first option `--cur`, if given.
+# For completion of built-in pugins, see `__docker_complete_plugins_bundled`.
+__docker_complete_plugins_installed() {
+	local current="$cur"
+	if [ "$1" = "--cur" ] ; then
+		current="$2"
+		shift 2
+	fi
+	COMPREPLY=( $(compgen -W "$(__docker_plugins_installed "$@")" -- "$current") )
 }
 
 __docker_runtimes() {
@@ -290,6 +321,38 @@ __docker_complete_runtimes() {
 	COMPREPLY=( $(compgen -W "$(__docker_runtimes)" -- "$cur") )
 }
 
+# __docker_secrets returns a list of all secrets.
+# By default, only names of secrets are returned.
+# Set DOCKER_COMPLETION_SHOW_SECRET_IDS=yes to also complete IDs of secrets.
+__docker_secrets() {
+	local fields='$2'  # default: name only
+	[ "${DOCKER_COMPLETION_SHOW_SECRET_IDS}" = yes ] && fields='$1,$2' # ID and name
+
+	__docker_q secret ls | awk "NR>1 {print $fields}"
+}
+
+# __docker_complete_secrets applies completion of secrets based on the current value
+# of `$cur`.
+__docker_complete_secrets() {
+	COMPREPLY=( $(compgen -W "$(__docker_secrets)" -- "$cur") )
+}
+
+# __docker_stacks returns a list of all stacks.
+__docker_stacks() {
+	__docker_q stack ls | awk 'NR>1 {print $1}'
+}
+
+# __docker_complete_stacks applies completion of stacks based on the current value
+# of `$cur` or the value of the optional first option `--cur`, if given.
+__docker_complete_stacks() {
+	local current="$cur"
+	if [ "$1" = "--cur" ] ; then
+		current="$2"
+		shift 2
+	fi
+	COMPREPLY=( $(compgen -W "$(__docker_stacks "$@")" -- "$current") )
+}
+
 # __docker_nodes returns a list of all nodes. Additional options to
 # `docker node ls` may be specified in order to filter the list, e.g.
 # `__docker_nodes --filter role=manager`
@@ -298,18 +361,33 @@ __docker_complete_runtimes() {
 # An optional first option `--id|--name` may be used to limit the
 # output to the IDs or names of matching items. This setting takes
 # precedence over the environment setting.
+# Completions may be added with `--add`, e.g. `--add self`.
 __docker_nodes() {
+	local add=()
 	local fields='$2'  # default: node name only
 	[ "${DOCKER_COMPLETION_SHOW_NODE_IDS}" = yes ] && fields='$1,$2' # ID and name
 
-	if [ "$1" = "--id" ] ; then
-		fields='$1' # IDs only
-		shift
-	elif [ "$1" = "--name" ] ; then
-		fields='$2' # names only
-		shift
-	fi
-	__docker_q node ls "$@" | tr -d '*' | awk "NR>1 {print $fields}"
+	while true ; do
+		case "$1" in
+			--id)
+				fields='$1' # IDs only
+				shift
+				;;
+			--name)
+				fields='$2' # names only
+				shift
+				;;
+			--add)
+				add+=("$2")
+				shift 2
+				;;
+			*)
+				break
+				;;
+		esac
+	done
+
+	echo $(__docker_q node ls "$@" | tr -d '*' | awk "NR>1 {print $fields}") "${add[@]}"
 }
 
 # __docker_complete_nodes applies completion of nodes based on the current
@@ -325,8 +403,7 @@ __docker_complete_nodes() {
 }
 
 __docker_complete_nodes_plus_self() {
-	__docker_complete_nodes "$@"
-	COMPREPLY+=( self )
+	__docker_complete_nodes --add self "$@"
 }
 
 # __docker_services returns a list of all services. Additional options to
@@ -370,6 +447,13 @@ __docker_complete_services() {
 # the __docker_complete_XXX functions in cases where you need a suffix.
 __docker_append_to_completions() {
 	COMPREPLY=( ${COMPREPLY[@]/%/"$1"} )
+}
+
+# __docker_is_experimental tests whether the currently configured Docker daemon
+# runs in experimental mode. If so, the function exits with 0 (true).
+# Otherwise, or if the result cannot be determined, the exit value is 1 (false).
+__docker_is_experimental() {
+	[ "$(__docker_q version -f '{{.Server.Experimental}}')" = "true" ]
 }
 
 # __docker_pos_first_nonflag finds the position of the first word that is neither
@@ -814,6 +898,7 @@ _docker_docker() {
 		*)
 			local counter=$( __docker_pos_first_nonflag "$(__docker_to_extglob "$global_options_with_args")" )
 			if [ $cword -eq $counter ]; then
+				__docker_is_experimental && commands+=(${experimental_commands[*]})
 				COMPREPLY=( $( compgen -W "${commands[*]} help" -- "$cur" ) )
 			fi
 			;;
@@ -826,6 +911,94 @@ _docker_attach() {
 
 _docker_build() {
 	_docker_image_build
+}
+
+
+_docker_checkpoint() {
+	local subcommands="
+		create
+		ls
+		rm
+	"
+	local aliases="
+		list
+		remove
+	"
+	__docker_subcommands "$subcommands $aliases" && return
+
+	case "$cur" in
+		-*)
+			COMPREPLY=( $( compgen -W "--help" -- "$cur" ) )
+			;;
+		*)
+			COMPREPLY=( $( compgen -W "$subcommands" -- "$cur" ) )
+			;;
+	esac
+}
+
+_docker_checkpoint_create() {
+	case "$prev" in
+		--checkpoint-dir)
+			_filedir -d
+			return
+			;;
+	esac
+
+	case "$cur" in
+		-*)
+			COMPREPLY=( $( compgen -W "--checkpoint-dir --help --leave-running" -- "$cur" ) )
+			;;
+		*)
+			local counter=$(__docker_pos_first_nonflag '--checkpoint-dir')
+			if [ $cword -eq $counter ]; then
+				__docker_complete_containers_running
+			fi
+			;;
+	esac
+}
+
+_docker_checkpoint_ls() {
+	case "$prev" in
+		--checkpoint-dir)
+			_filedir -d
+			return
+			;;
+	esac
+
+	case "$cur" in
+		-*)
+			COMPREPLY=( $( compgen -W "--checkpoint-dir --help" -- "$cur" ) )
+			;;
+		*)
+			local counter=$(__docker_pos_first_nonflag '--checkpoint-dir')
+			if [ $cword -eq $counter ]; then
+				__docker_complete_containers_all
+			fi
+			;;
+	esac
+}
+
+_docker_checkpoint_rm() {
+	case "$prev" in
+		--checkpoint-dir)
+			_filedir -d
+			return
+			;;
+	esac
+
+	case "$cur" in
+		-*)
+			COMPREPLY=( $( compgen -W "--checkpoint-dir --help" -- "$cur" ) )
+			;;
+		*)
+			local counter=$(__docker_pos_first_nonflag '--checkpoint-dir')
+			if [ $cword -eq $counter ]; then
+				__docker_complete_containers_all
+			elif [ $cword -eq $(($counter + 1)) ]; then
+				COMPREPLY=( $( compgen -W "$(__docker_q checkpoint ls "$prev" | sed 1d)" -- "$cur" ) )
+			fi
+			;;
+	esac
 }
 
 
@@ -1256,6 +1429,7 @@ _docker_container_run() {
 		--expose
 		--group-add
 		--hostname -h
+		--init-path
 		--ip
 		--ip6
 		--ipc
@@ -1272,7 +1446,6 @@ _docker_container_run() {
 		--memory-swap
 		--memory-swappiness
 		--memory-reservation
-		--mount
 		--name
 		--network
 		--network-alias
@@ -1302,6 +1475,7 @@ _docker_container_run() {
 	local boolean_options="
 		--disable-content-trust=false
 		--help
+		--init
 		--interactive -i
 		--oom-kill-disable
 		--privileged
@@ -1368,7 +1542,7 @@ _docker_container_run() {
 			__docker_complete_capabilities
 			return
 			;;
-		--cidfile|--env-file|--label-file)
+		--cidfile|--env-file|--init-path|--label-file)
 			_filedir
 			return
 			;;
@@ -1439,7 +1613,7 @@ _docker_container_run() {
 					__docker_complete_containers_all --cur "${cur#*:}"
 					;;
 				*)
-					COMPREPLY=( $( compgen -W "$(__docker_plugins --type Network) $(__docker_networks) container:" -- "$cur") )
+					COMPREPLY=( $( compgen -W "$(__docker_plugins_bundled --type Network) $(__docker_networks) container:" -- "$cur") )
 					if [ "${COMPREPLY[*]}" = "container:" ] ; then
 						__docker_nospace
 					fi
@@ -1486,7 +1660,7 @@ _docker_container_run() {
 			return
 			;;
 		--volume-driver)
-			__docker_complete_plugins --type Volume
+			__docker_complete_plugins_bundled --type Volume
 			return
 			;;
 		--volumes-from)
@@ -1514,9 +1688,25 @@ _docker_container_run() {
 _docker_container_start() {
 	__docker_complete_detach-keys && return
 
+	case "$prev" in
+		--checkpoint)
+			if [ __docker_is_experimental ] ; then
+				return
+			fi
+			;;
+		--checkpoint-dir)
+			if [ __docker_is_experimental ] ; then
+				_filedir -d
+				return
+			fi
+			;;
+	esac
+
 	case "$cur" in
 		-*)
-			COMPREPLY=( $( compgen -W "--attach -a --detach-keys --help --interactive -i" -- "$cur" ) )
+			local options="--attach -a --detach-keys --help --interactive -i"
+			__docker_is_experimental && options+=" --checkpoint --checkpoint-dir"
+			COMPREPLY=( $( compgen -W "$options" -- "$cur" ) )
 			;;
 		*)
 			__docker_complete_containers_stopped
@@ -1658,6 +1848,7 @@ _docker_daemon() {
 		--experimental
 		--help
 		--icc=false
+		--init
 		--ip-forward=false
 		--ip-masq=false
 		--iptables=false
@@ -1742,7 +1933,7 @@ _docker_daemon() {
 
 	case "$prev" in
 		--authorization-plugin)
-			__docker_complete_plugins --type Authorization
+			__docker_complete_plugins_bundled --type Authorization
 			return
 			;;
 		--cluster-store)
@@ -1838,6 +2029,10 @@ _docker_daemon() {
 	esac
 }
 
+_docker_deploy() {
+	__docker_is_experimental && _docker_stack_deploy
+}
+
 _docker_diff() {
 	_docker_container_diff
 }
@@ -1930,6 +2125,7 @@ _docker_image_build() {
 		--quiet -q
 		--rm
 	"
+	__docker_is_experimental && boolean_options+="--squash"
 
 	local all_options="$options_with_args $boolean_options"
 
@@ -2228,7 +2424,7 @@ _docker_inspect() {
 			;;
 		--type)
 			if [ -z "$preselected_type" ] ; then
-				COMPREPLY=( $( compgen -W "image container" -- "$cur" ) )
+				COMPREPLY=( $( compgen -W "container image network node plugin service volume" -- "$cur" ) )
 				return
 			fi
 			;;
@@ -2245,13 +2441,36 @@ _docker_inspect() {
 		*)
 			case "$type" in
 				'')
-					__docker_complete_containers_and_images
+					COMPREPLY=( $( compgen -W "
+						$(__docker_containers --all)
+						$(__docker_images)
+						$(__docker_networks)
+						$(__docker_nodes)
+						$(__docker_plugins_installed)
+						$(__docker_services)
+						$(__docker_volumes)
+					" -- "$cur" ) )
 					;;
 				container)
 					__docker_complete_containers_all
 					;;
 				image)
 					__docker_complete_images
+					;;
+				network)
+					__docker_complete_networks
+					;;
+				node)
+					__docker_complete_nodes
+					;;
+				plugin)
+					__docker_complete_plugins_installed
+					;;
+				service)
+					__docker_complete_services
+					;;
+				volume)
+					__docker_complete_volumes
 					;;
 			esac
 	esac
@@ -2348,7 +2567,7 @@ _docker_network_create() {
 			;;
 		--driver|-d)
 			# remove drivers that allow one instance only, add drivers missing in `docker info`
-			__docker_complete_plugins --type Network --remove host --remove null --add macvlan
+			__docker_complete_plugins_bundled --type Network --remove host --remove null --add macvlan
 			return
 			;;
 		--label)
@@ -2358,7 +2577,7 @@ _docker_network_create() {
 
 	case "$cur" in
 		-*)
-			COMPREPLY=( $( compgen -W "--aux-address --driver -d --gateway --help --internal --ip-range --ipam-driver --ipam-opt --ipv6 --label --opt -o --subnet" -- "$cur" ) )
+			COMPREPLY=( $( compgen -W "--attachable --aux-address --driver -d --gateway --help --internal --ip-range --ipam-driver --ipam-opt --ipv6 --label --opt -o --subnet" -- "$cur" ) )
 			;;
 	esac
 }
@@ -2399,7 +2618,7 @@ _docker_network_ls() {
 	local key=$(__docker_map_key_of_current_option '--filter|-f')
 	case "$key" in
 		driver)
-			__docker_complete_plugins --cur "${cur##*=}" --type Network --add macvlan
+			__docker_complete_plugins_bundled --cur "${cur##*=}" --type Network --add macvlan
 			return
 			;;
 		id)
@@ -2484,6 +2703,8 @@ _docker_service() {
 		ps
 		update
 	"
+	__docker_daemon_is_experimental && subcommands+="logs"
+
 	__docker_subcommands "$subcommands" && return
 
 	case "$cur" in
@@ -2513,6 +2734,26 @@ _docker_service_inspect() {
 			;;
 		*)
 			__docker_complete_services
+	esac
+}
+
+_docker_service_logs() {
+	case "$prev" in
+		--since|--tail)
+			return
+			;;
+	esac
+
+	case "$cur" in
+		-*)
+			COMPREPLY=( $( compgen -W "--details --follow -f --help --no-resolve --since --tail --timestamps -t" -- "$cur" ) )
+			;;
+		*)
+			local counter=$(__docker_pos_first_nonflag '--since|--tail')
+			if [ $cword -eq $counter ]; then
+				__docker_complete_services
+			fi
+			;;
 	esac
 }
 
@@ -2586,11 +2827,15 @@ _docker_service_ps() {
 			__docker_complete_services --cur "${cur##*=}" --name
 			return
 			;;
+		node)
+			__docker_complete_nodes_plus_self --cur "${cur##*=}"
+			return
+			;;
 	esac
 
 	case "$prev" in
 		--filter|-f)
-			COMPREPLY=( $( compgen -W "desired-state id name" -S = -- "$cur" ) )
+			COMPREPLY=( $( compgen -W "desired-state id name node" -S = -- "$cur" ) )
 			__docker_nospace
 			return
 			;;
@@ -2598,7 +2843,7 @@ _docker_service_ps() {
 
 	case "$cur" in
 		-*)
-			COMPREPLY=( $( compgen -W "--all -a --filter -f --help --no-resolve --no-trunc --quiet -q" -- "$cur" ) )
+			COMPREPLY=( $( compgen -W "--filter -f --help --no-resolve --no-trunc --quiet -q" -- "$cur" ) )
 			;;
 		*)
 			local counter=$(__docker_pos_first_nonflag '--filter|-f')
@@ -2630,7 +2875,6 @@ _docker_service_update() {
 		--mount
 		--network
 		--no-healthcheck
-		--publish -p
 		--replicas
 		--reserve-cpu
 		--reserve-memory
@@ -2665,9 +2909,11 @@ _docker_service_update() {
 			--dns-search
 			--env-file
 			--group
+			--host
 			--mode
 			--name
-			--port
+			--publish -p
+			--secret
 		"
 
 		case "$prev" in
@@ -2675,8 +2921,20 @@ _docker_service_update() {
 				_filedir
 				return
 				;;
+			--host)
+				case "$cur" in
+					*:)
+						__docker_complete_resolved_hostname
+						return
+						;;
+				esac
+				;;
 			--mode)
 				COMPREPLY=( $( compgen -W "global replicated" -- "$cur" ) )
+				return
+				;;
+			--secret)
+				__docker_complete_secrets
 				return
 				;;
 			--group)
@@ -2698,9 +2956,13 @@ _docker_service_update() {
 			--dns-search-rm
 			--group-add
 			--group-rm
+			--host-add
+			--host-rm
 			--image
-			--port-add
-			--port-rm
+			--publish-add
+			--publish-rm
+			--secret-add
+			--secret-rm
 		"
 
 		case "$prev" in
@@ -2712,8 +2974,20 @@ _docker_service_update() {
 				COMPREPLY=( $(compgen -g -- "$cur") )
 				return
 				;;
+			--host-add|--host-rm)
+				case "$cur" in
+					*:)
+						__docker_complete_resolved_hostname
+						return
+						;;
+				esac
+				;;
 			--image)
 				__docker_complete_image_repos_and_tags
+				return
+				;;
+			--secret-add|--secret-rm)
+				__docker_complete_secrets
 				return
 				;;
 		esac
@@ -2760,9 +3034,17 @@ _docker_service_update() {
 			COMPREPLY=( $( compgen -W "$boolean_options $options_with_args" -- "$cur" ) )
 			;;
 		*)
+			local counter=$( __docker_pos_first_nonflag $( __docker_to_alternatives "$options_with_args" ) )
 			if [ "$subcommand" = "update" ] ; then
-				__docker_complete_services
+				if [ $cword -eq $counter ]; then
+					__docker_complete_services
+				fi
+			else
+				if [ $cword -eq $counter ]; then
+					__docker_complete_images
+				fi
 			fi
+			;;
 	esac
 }
 
@@ -2772,6 +3054,8 @@ _docker_swarm() {
 		join
 		join-token
 		leave
+		unlock
+		unlock-key
 		update
 	"
 	__docker_subcommands "$subcommands" && return
@@ -2797,6 +3081,13 @@ _docker_swarm_init() {
 			fi
 			return
 			;;
+		--availability)
+			COMPREPLY=( $( compgen -W "active drain pause" -- "$cur" ) )
+			return
+			;;
+		--cert-expiry|--dispatcher-heartbeat|--external-ca|--max-snapshots|--snapshot-interval|--task-history-limit)
+			return
+			;;
 		--listen-addr)
 			if [[ $cur == *: ]] ; then
 				COMPREPLY=( $( compgen -W "2377" -- "${cur##*:}" ) )
@@ -2810,7 +3101,7 @@ _docker_swarm_init() {
 
 	case "$cur" in
 		-*)
-			COMPREPLY=( $( compgen -W "--advertise-addr --force-new-cluster --help --listen-addr" -- "$cur" ) )
+			COMPREPLY=( $( compgen -W "--advertise-addr --autolock --availability --cert-expiry --dispatcher-heartbeat --external-ca --force-new-cluster --help --listen-addr --max-snapshots --snapshot-interval --task-history-limit" -- "$cur" ) )
 			;;
 	esac
 }
@@ -2872,16 +3163,32 @@ _docker_swarm_leave() {
 	esac
 }
 
+_docker_swarm_unlock() {
+	case "$cur" in
+		-*)
+			COMPREPLY=( $( compgen -W "--help" -- "$cur" ) )
+			;;
+	esac
+}
+
+_docker_swarm_unlock-key() {
+	case "$cur" in
+		-*)
+			COMPREPLY=( $( compgen -W "--help --quiet -q --rotate" -- "$cur" ) )
+			;;
+	esac
+}
+
 _docker_swarm_update() {
 	case "$prev" in
-		--cert-expiry|--dispatcher-heartbeat|--max-snapshots|--snapshot-interval|--task-history-limit)
+		--cert-expiry|--dispatcher-heartbeat|--external-ca|--max-snapshots|--snapshot-interval|--task-history-limit)
 			return
 			;;
 	esac
 
 	case "$cur" in
 		-*)
-			COMPREPLY=( $( compgen -W "--cert-expiry --dispatcher-heartbeat --help --max-snapshots --snapshot-interval --task-history-limit" -- "$cur" ) )
+			COMPREPLY=( $( compgen -W "--autolock --cert-expiry --dispatcher-heartbeat --external-ca --help --max-snapshots --snapshot-interval --task-history-limit" -- "$cur" ) )
 			;;
 	esac
 }
@@ -3013,7 +3320,7 @@ _docker_node_ps() {
 
 	case "$cur" in
 		-*)
-			COMPREPLY=( $( compgen -W "--all -a --filter -f --help --no-resolve --no-trunc" -- "$cur" ) )
+			COMPREPLY=( $( compgen -W "--filter -f --help --no-resolve --no-trunc" -- "$cur" ) )
 			;;
 		*)
 			__docker_complete_nodes_plus_self
@@ -3048,6 +3355,172 @@ _docker_node_update() {
 _docker_pause() {
 	_docker_container_pause
 }
+
+_docker_plugin() {
+	local subcommands="
+		create
+		disable
+		enable
+		inspect
+		install
+		ls
+		push
+		rm
+		set
+	"
+	local aliases="
+		list
+		remove
+	"
+	__docker_subcommands "$subcommands $aliases" && return
+
+	case "$cur" in
+		-*)
+			COMPREPLY=( $( compgen -W "--help" -- "$cur" ) )
+			;;
+		*)
+			COMPREPLY=( $( compgen -W "$subcommands" -- "$cur" ) )
+			;;
+	esac
+}
+
+_docker_plugin_create() {
+	case "$cur" in
+		-*)
+			COMPREPLY=( $( compgen -W "--compress --help" -- "$cur" ) )
+			;;
+		*)
+			local counter=$(__docker_pos_first_nonflag)
+			if [ $cword -eq $counter ]; then
+				# reponame
+				return
+			elif [ $cword -eq  $((counter + 1)) ]; then
+				_filedir -d
+			fi
+			;;
+	esac
+}
+
+_docker_plugin_disable() {
+	case "$cur" in
+		-*)
+			COMPREPLY=( $( compgen -W "--force -f --help" -- "$cur" ) )
+			;;
+		*)
+			local counter=$(__docker_pos_first_nonflag)
+			if [ $cword -eq $counter ]; then
+				__docker_complete_plugins_installed
+			fi
+			;;
+	esac
+}
+
+_docker_plugin_enable() {
+	case "$prev" in
+		--timeout)
+			return
+			;;
+	esac
+
+	case "$cur" in
+		-*)
+			COMPREPLY=( $( compgen -W "--help --timeout" -- "$cur" ) )
+			;;
+		*)
+			local counter=$(__docker_pos_first_nonflag '--timeout')
+			if [ $cword -eq $counter ]; then
+				__docker_complete_plugins_installed
+			fi
+			;;
+	esac
+}
+
+_docker_plugin_inspect() {
+	case "$prev" in
+		--format|f)
+			return
+			;;
+	esac
+
+	case "$cur" in
+		-*)
+			COMPREPLY=( $( compgen -W "--format -f --help" -- "$cur" ) )
+			;;
+		*)
+			__docker_complete_plugins_installed
+			;;
+	esac
+}
+
+_docker_plugin_install() {
+	case "$prev" in
+		--alias)
+			return
+			;;
+	esac
+
+	case "$cur" in
+		-*)
+			COMPREPLY=( $( compgen -W "--alias --disable --disable-content-trust=false --grant-all-permissions --help" -- "$cur" ) )
+			;;
+	esac
+}
+
+_docker_plugin_list() {
+	_docker_plugin_ls
+}
+
+_docker_plugin_ls() {
+	case "$cur" in
+		-*)
+			COMPREPLY=( $( compgen -W "--help --no-trunc" -- "$cur" ) )
+			;;
+	esac
+}
+
+_docker_plugin_push() {
+	case "$cur" in
+		-*)
+			COMPREPLY=( $( compgen -W "--help" -- "$cur" ) )
+			;;
+		*)
+			local counter=$(__docker_pos_first_nonflag)
+			if [ $cword -eq $counter ]; then
+				__docker_complete_plugins_installed
+			fi
+			;;
+	esac
+}
+
+_docker_plugin_remove() {
+	_docker_plugin_rm
+}
+
+_docker_plugin_rm() {
+	case "$cur" in
+		-*)
+			COMPREPLY=( $( compgen -W "--force -f --help" -- "$cur" ) )
+			;;
+		*)
+			__docker_complete_plugins_installed
+			;;
+	esac
+}
+
+_docker_plugin_set() {
+	case "$cur" in
+		-*)
+			COMPREPLY=( $( compgen -W "--help" -- "$cur" ) )
+			;;
+		*)
+			local counter=$(__docker_pos_first_nonflag)
+			if [ $cword -eq $counter ]; then
+				__docker_complete_plugins_installed
+			fi
+			;;
+	esac
+}
+
 
 _docker_port() {
 	_docker_container_port
@@ -3089,6 +3562,90 @@ _docker_save() {
 	_docker_image_save
 }
 
+
+_docker_secret() {
+	local subcommands="
+		create
+		inspect
+		ls
+		rm
+	"
+	local aliases="
+		list
+		remove
+	"
+	__docker_subcommands "$subcommands $aliases" && return
+
+	case "$cur" in
+		-*)
+			COMPREPLY=( $( compgen -W "--help" -- "$cur" ) )
+			;;
+		*)
+			COMPREPLY=( $( compgen -W "$subcommands" -- "$cur" ) )
+			;;
+	esac
+}
+
+_docker_secret_create() {
+	case "$prev" in
+		--label|-l)
+			return
+			;;
+	esac
+
+	case "$cur" in
+		-*)
+			COMPREPLY=( $( compgen -W "--help --label -l" -- "$cur" ) )
+			;;
+	esac
+}
+
+_docker_secret_inspect() {
+	case "$prev" in
+		--format|-f)
+			return
+			;;
+	esac
+
+	case "$cur" in
+		-*)
+			COMPREPLY=( $( compgen -W "--format -f --help" -- "$cur" ) )
+			;;
+		*)
+			__docker_complete_secrets
+			;;
+	esac
+}
+
+_docker_secret_list() {
+	_docker_secret_ls
+}
+
+_docker_secret_ls() {
+	case "$cur" in
+		-*)
+			COMPREPLY=( $( compgen -W "--help --quiet -q" -- "$cur" ) )
+			;;
+	esac
+}
+
+_docker_secret_remove() {
+	case "$cur" in
+		-*)
+			COMPREPLY=( $( compgen -W "--help" -- "$cur" ) )
+			;;
+		*)
+			__docker_complete_secrets
+			;;
+	esac
+}
+
+_docker_secret_rm() {
+	_docker_secret_remove
+}
+
+
+
 _docker_search() {
 	local key=$(__docker_map_key_of_current_option '--filter|-f')
 	case "$key" in
@@ -3119,6 +3676,170 @@ _docker_search() {
 			;;
 	esac
 }
+
+
+_docker_stack() {
+	local subcommands="
+		deploy
+		ls
+		ps
+		rm
+		services
+	"
+	local aliases="
+		down
+		list
+		remove
+		up
+	"
+	__docker_subcommands "$subcommands $aliases" && return
+
+	case "$cur" in
+		-*)
+			COMPREPLY=( $( compgen -W "--help" -- "$cur" ) )
+			;;
+		*)
+			COMPREPLY=( $( compgen -W "$subcommands" -- "$cur" ) )
+			;;
+	esac
+}
+
+_docker_stack_deploy() {
+	case "$prev" in
+		--bundle-file)
+			if __docker_is_experimental ; then
+				_filedir dab
+				return
+			fi
+			;;
+		--compose-file|-c)
+			_filedir yml
+			return
+			;;
+	esac
+
+	case "$cur" in
+		-*)
+			local options="--compose-file -c --help --with-registry-auth"
+			__docker_is_experimental && options+=" --bundle-file"
+			COMPREPLY=( $( compgen -W "$options" -- "$cur" ) )
+			;;
+	esac
+}
+
+_docker_stack_down() {
+	_docker_stack_rm
+}
+
+_docker_stack_list() {
+	_docker_stack_ls
+}
+
+_docker_stack_ls() {
+	case "$cur" in
+		-*)
+			COMPREPLY=( $( compgen -W "--help" -- "$cur" ) )
+			;;
+	esac
+}
+
+_docker_stack_ps() {
+	local key=$(__docker_map_key_of_current_option '--filter|-f')
+	case "$key" in
+		desired-state)
+			COMPREPLY=( $( compgen -W "accepted running" -- "${cur##*=}" ) )
+			return
+			;;
+		id)
+			__docker_complete_stacks --cur "${cur##*=}" --id
+			return
+			;;
+		name)
+			__docker_complete_stacks --cur "${cur##*=}" --name
+			return
+			;;
+	esac
+
+	case "$prev" in
+		--filter|-f)
+			COMPREPLY=( $( compgen -S = -W "id name desired-state" -- "$cur" ) )
+			__docker_nospace
+			return
+			;;
+	esac
+
+	case "$cur" in
+		-*)
+			COMPREPLY=( $( compgen -W "--all -a --filter -f --help --no-resolve --no-trunc" -- "$cur" ) )
+			;;
+		*)
+			local counter=$(__docker_pos_first_nonflag '--filter|-f')
+			if [ $cword -eq $counter ]; then
+				__docker_complete_stacks
+			fi
+			;;
+	esac
+}
+
+_docker_stack_remove() {
+	_docker_stack_rm
+}
+
+_docker_stack_rm() {
+	case "$cur" in
+		-*)
+			COMPREPLY=( $( compgen -W "--help" -- "$cur" ) )
+			;;
+		*)
+			local counter=$(__docker_pos_first_nonflag)
+			if [ $cword -eq $counter ]; then
+				__docker_complete_stacks
+			fi
+			;;
+	esac
+}
+
+_docker_stack_services() {
+	local key=$(__docker_map_key_of_current_option '--filter|-f')
+	case "$key" in
+		id)
+			__docker_complete_services --cur "${cur##*=}" --id
+			return
+			;;
+		label)
+			return
+			;;
+		name)
+			__docker_complete_services --cur "${cur##*=}" --name
+			return
+			;;
+	esac
+
+	case "$prev" in
+		--filter|-f)
+			COMPREPLY=( $( compgen -S = -W "id label name" -- "$cur" ) )
+			__docker_nospace
+			return
+			;;
+	esac
+
+	case "$cur" in
+		-*)
+			COMPREPLY=( $( compgen -W "--filter -f --help --quiet -q" -- "$cur" ) )
+			;;
+		*)
+			local counter=$(__docker_pos_first_nonflag '--filter|-f')
+			if [ $cword -eq $counter ]; then
+				__docker_complete_stacks
+			fi
+			;;
+	esac
+}
+
+_docker_stack_up() {
+	_docker_stack_deploy
+}
+
 
 _docker_start() {
 	_docker_container_start
@@ -3290,9 +4011,15 @@ _docker_top() {
 }
 
 _docker_version() {
+	case "$prev" in
+		--format|-f)
+			return
+			;;
+	esac
+
 	case "$cur" in
 		-*)
-			COMPREPLY=( $( compgen -W "--help" -- "$cur" ) )
+			COMPREPLY=( $( compgen -W "--format -f --help" -- "$cur" ) )
 			;;
 	esac
 }
@@ -3300,7 +4027,7 @@ _docker_version() {
 _docker_volume_create() {
 	case "$prev" in
 		--driver|-d)
-			__docker_complete_plugins --type Volume
+			__docker_complete_plugins_bundled --type Volume
 			return
 			;;
 		--label|--opt|-o)
@@ -3340,7 +4067,7 @@ _docker_volume_ls() {
 			return
 			;;
 		driver)
-			__docker_complete_plugins --cur "${cur##*=}" --type Volume
+			__docker_complete_plugins_bundled --cur "${cur##*=}" --type Volume
 			return
 			;;
 		name)
@@ -3414,31 +4141,44 @@ _docker() {
 	local previous_extglob_setting=$(shopt -p extglob)
 	shopt -s extglob
 
-	local commands=(
-		attach
-		build
-		commit
+	local management_commands=(
 		container
+		image
+		network
+		node
+		plugin
+		secret
+		service
+		stack
+		system
+		volume
+	)
+
+	local top_level_commands=(
+		build
+		login
+		logout
+		run
+		search
+		version
+	)
+
+	local legacy_commands=(
+		commit
 		cp
 		create
-		daemon
 		diff
 		events
 		exec
 		export
 		history
-		image
 		images
 		import
 		info
 		inspect
 		kill
 		load
-		login
-		logout
 		logs
-		network
-		node
 		pause
 		port
 		ps
@@ -3448,23 +4188,25 @@ _docker() {
 		restart
 		rm
 		rmi
-		run
 		save
-		search
-		service
 		start
 		stats
 		stop
 		swarm
-		system
 		tag
 		top
 		unpause
 		update
-		version
-		volume
 		wait
 	)
+
+	local experimental_commands=(
+		checkpoint
+		deploy
+	)
+
+	local commands=(${management_commands[*]} ${top_level_commands[*]})
+	[ -z "$DOCKER_HIDE_LEGACY_COMMANDS" ] && commands+=(${legacy_commands[*]})
 
 	# These options are valid as global options for all client commands
 	# and valid as command options for `docker daemon`
