@@ -48,8 +48,8 @@ RUN ./install-python
 RUN ./install-docker-toolchain
 
 # setup group and permission for docker sock
-groupadd -g 999 docker
-usermod -aG docker yihungjen
+RUN groupadd -g 999 docker
+RUN usermod -aG docker yihungjen
 
 # install misc stuff
 RUN ./install-misc
