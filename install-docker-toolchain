@@ -2,9 +2,10 @@
 set -e
 
 # install docker client
-curl -sSL https://get.docker.com/builds/`uname -s`/`uname -m`/docker-1.13.0.tgz | tar \
-    --transform "s@docker@./@" \
-    -zxf - -C /usr/local/bin -- docker/docker
+mkdir -p /tmp/docker-release
+curl -sSL https://get.docker.com/builds/`uname -s`/`uname -m`/docker-1.13.0.tgz | tar -zxf - -C /tmp/docker-release
+find /tmp/docker-release -name 'docker' -type f -perm +u=x -exec mv -i {} /usr/local/bin \;
+rm -rf /tmp/docker-release
 
 # install docker-compose for local service stack orchestration
 curl -sSL https://github.com/docker/compose/releases/download/1.10.0/docker-compose-`uname -s`-`uname -m` > /usr/local/bin/docker-compose
@@ -13,7 +14,3 @@ chmod +x /usr/local/bin/docker-compose
 # install docker-machine
 curl -L https://github.com/docker/machine/releases/download/v0.9.0/docker-machine-`uname -s`-`uname -m` > /usr/local/bin/docker-machine
 chmod +x /usr/local/bin/docker-machine
-
-# setup group and permission for docker sock
-groupadd -g 999 docker
-usermod -aG docker yihungjen
