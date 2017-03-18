@@ -7,6 +7,9 @@ autocmd! bufwritepost .vimrc source %
 " Now you can install vim plugin into ~/.vim/bundle/<plugin-name>
 call pathogen#infect()
 
+" Change swapfile location
+set directory=$HOME/.vim/swapfiles//
+
 " Rebind <Leader> key
 let mapleader = ","
 
