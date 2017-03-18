@@ -193,5 +193,3 @@ au BufRead,BufNewFile *.wsgi set filetype=python
 au BufRead,BufNewFile *.thrift set filetype=cpp
 au BufNewFile,BufReadPost *.md set filetype=markdown
 au BufNewFile,BufReadPost *.mustache set filetype=html
-
-call localrc#load('.local.vimrc', getcwd())
