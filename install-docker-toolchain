@@ -3,8 +3,8 @@ set -e
 
 # install docker client
 mkdir -p /tmp/docker-release
-curl -sSL https://download.docker.com/`uname -s | tr '[:upper:]' '[:lower:]'`/static/stable/`uname -m`/docker-17.03.1-ce.tgz | tar -zxf - -C /tmp/docker-release
-find /tmp/docker-release -name 'docker' -type f -perm '-u=x' -exec mv {} /usr/local/bin \;
+curl -sSL https://download.docker.com/`uname -s | tr '[:upper:]' '[:lower:]'`/static/stable/`uname -m`/docker-17.06.0-ce.tgz | tar -zxf - -C /tmp/docker-release
+find /tmp/docker-release -name 'docker' -type f -perm '-u=x' -exec mv -i {} /usr/local/bin \;
 rm -rf /tmp/docker-release
 
 # install docker-compose for local service stack orchestration
