@@ -37,28 +37,28 @@ fi
 # You may want to put all your additions into a separate file like
 # ~/.bash_aliases, instead of adding them here directly.
 # See /usr/share/doc/bash-doc/examples in the bash-doc package.
-if [ -f ~/.workspaceenv/bash_aliases ]; then
-    . ~/.workspaceenv/bash_aliases
+if [ -f ~/.workspace/bash_aliases ]; then
+    . ~/.workspace/bash_aliases
 fi
 
 # definition for environment setup
-if [ -f ~/.workspaceenv/bash_env ]; then
-    . ~/.workspaceenv/bash_env
+if [ -f ~/.workspace/bash_env ]; then
+    . ~/.workspace/bash_env
 fi
 
-# definition for.workspaceenv commandline editing
-if [ -f ~/.workspaceenv/bash_editmode ]; then
-    . ~/.workspaceenv/bash_editmode
+# definition forworkspace commandline editing
+if [ -f ~/.workspace/bash_editmode ]; then
+    . ~/.workspace/bash_editmode
 fi
 
 # definition for convenience wrapper
-if [ -f ~/.workspaceenv/bash_function ]; then
-    . ~/.workspaceenv/bash_function
+if [ -f ~/.workspace/bash_function ]; then
+    . ~/.workspace/bash_function
 fi
 
 # definition for bash shell completions
-if [ -f ~/.workspaceenv/bash_completion ]; then
-    . ~/.workspaceenv/bash_completion
+if [ -f ~/.workspace/bash_completion ]; then
+    . ~/.workspace/bash_completion
 fi
 
 # set a fancy prompt (non-color, unless we know we "want" color)
@@ -84,12 +84,16 @@ fi
 
 if [ "$color_prompt" = yes ]; then
     if test "$UID" -ne 0; then
-        PS1="\[\033[38;5;2m\]\u\[$(tput sgr0)\]\[\033[38;5;15m\]@\[$(tput sgr0)\]\[\033[38;5;4m\]\h\[$(tput sgr0)\]\[\033[38;5;15m\][\w] {\[$(tput sgr0)\]\[\033[38;5;2m\]\$?\[$(tput sgr0)\]\[\033[38;5;15m\]}\$(__git_ps1)\$(__machine_ps1)\$(__reboot_ps1)\n>> \[$(tput sgr0)\]"
+        PS1="\[\033[38;5;2m\]\u\[$(tput sgr0)\]\[\033[38;5;15m\]@\[$(tput sgr0)\]\[\033[38;5;4m\]\h\[$(tput sgr0)\]\[\033[38;5;15m\][\w] {\[$(tput sgr0)\]\[\033[38;5;2m\]\$?\[$(tput sgr0)\]\[\033[38;5;15m\]}\$(__git_ps1)\$(__reboot_ps1)\$(__aws_profile)\$(__aws_s2a_profile)\$(__kubectl_current_context)\n>> \[$(tput sgr0)\]"
     else
-        PS1="\[\033[38;5;1m\]\u\[$(tput sgr0)\]\[\033[38;5;15m\]@\[$(tput sgr0)\]\[\033[38;5;4m\]\h\[$(tput sgr0)\]\[\033[38;5;15m\][\w] {\[$(tput sgr0)\]\[\033[38;5;2m\]\$?\[$(tput sgr0)\]\[\033[38;5;15m\]}\$(__git_ps1)\$(__machine_ps1)\$(__reboot_ps1)\n>> \[$(tput sgr0)\]"
+        PS1="\[\033[38;5;1m\]\u\[$(tput sgr0)\]\[\033[38;5;15m\]@\[$(tput sgr0)\]\[\033[38;5;4m\]\h\[$(tput sgr0)\]\[\033[38;5;15m\][\w] {\[$(tput sgr0)\]\[\033[38;5;2m\]\$?\[$(tput sgr0)\]\[\033[38;5;15m\]}\$(__git_ps1)\$(__reboot_ps1)\$(__aws_profile)\$(__aws_s2a_profile)\$(__kubectl_current_context)\n>> \[$(tput sgr0)\]"
     fi
 else
-    PS1="\u@\h[\w] {\$?}\$(__git_ps1)\$(__machine_ps1)\$(__reboot_ps1)\n>> \[$(tput sgr0)\]"
+    PS1="\u@\h[\w] {\$?}\$(__git_ps1)\$(__machine_ps1)\$(__reboot_ps1)\$(__aws_profile)\$(__aws_s2a_profile)\$(__kubectl_current_context)\n>> \[$(tput sgr0)\]"
 fi
 PS2='.. '
 unset color_prompt force_color_prompt
+
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion

@@ -7,11 +7,13 @@
     local = log HEAD --oneline --decorate
     ll = log --oneline --decorate
 [user]
-    name = Jeffrey Jen
-    email = yihungjen@gmail.com
+    name = Jeffery Jen
+    email = jeffery.jen@binance.com
 [push]
-	default = upstream
+    default = upstream
 [core]
-	editor = vim
+    editor = vim
 [svn]
     rmdir = true
+[credential]
+    helper = store

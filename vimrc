@@ -15,7 +15,7 @@ let mapleader = ","
 
 " Better copy & paste
 set pastetoggle=<F2>
-set clipboard=unnamedplus
+set clipboard=unnamed
 
 " Quick copy to clipboard
 nnoremap <Leader>y "*y

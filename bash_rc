@@ -19,3 +19,26 @@ __reboot_ps1 ()
         echo " (reboot)"
     fi
 }
+
+__kubectl_current_context ()
+{
+    if command -v kubectl >/dev/null; then
+        if kubectl config current-context &>/dev/null; then
+            echo " (kubectl: $(kubectl config current-context))"
+        fi
+    fi
+}
+
+__aws_profile ()
+{
+    if [ ! -z ${AWS_PROFILE} ]; then
+        echo " (AWS: ${AWS_PROFILE})"
+    fi
+}
+
+__aws_s2a_profile ()
+{
+    if [ ! -z ${AWS_S2A_PROFILE} ]; then
+        echo " (S2A: ${AWS_S2A_PROFILE})"
+    fi
+}

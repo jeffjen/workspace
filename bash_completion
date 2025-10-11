@@ -1,44 +1,9 @@
 # include github git-completion
-if [ -f ~/.workspaceenv/git-completion.bash ]; then
-    . ~/.workspaceenv/git-completion.bash
+if [ -f ~/.workspace/git-completion.bash ]; then
+    . ~/.workspace/git-completion.bash
 fi
 
 # include github git-prompt
-if [ -f ~/.workspaceenv/git-prompt.sh ]; then
-    . ~/.workspaceenv/git-prompt.sh
-fi
-
-# include machine completion
-if [ -f ~/.workspaceenv/machine.bash ]; then
-    source ~/.workspaceenv/machine.bash
-fi
-
-# include machine wrapper
-if [ -f ~/.workspaceenv/machine-wrapper.bash ]; then
-    source ~/.workspaceenv/machine-wrapper.bash
-fi
-
-# include machine prompt
-if [ -f ~/.workspaceenv/machine-prompt.bash ]; then
-    source ~/.workspaceenv/machine-prompt.bash
-fi
-
-# include docker-machine completion
-if [ -f ~/.workspaceenv/machine-completion.bash ]; then
-    source ~/.workspaceenv/docker-machine.bash
-fi
-
-# include docker-machine wrapper
-if [ -f ~/.workspaceenv/machine-wrapper.bash ]; then
-    source ~/.workspaceenv/docker-machine-wrapper.bash
-fi
-
-# include docker-machine prompt
-if [ -f ~/.workspaceenv/machine-prompt.bash ]; then
-    source ~/.workspaceenv/docker-machine-prompt.bash
-fi
-
-# include docker completion
-if [ -f ~/.workspaceenv/docker.bash ]; then
-    source ~/.workspaceenv/docker.bash
+if [ -f ~/.workspace/git-prompt.sh ]; then
+    . ~/.workspace/git-prompt.sh
 fi
