@@ -1,0 +1,19 @@
+[color]
+    diff = true
+    status = auto
+[alias]
+    co = checkout
+    lol = log --graph --decorate --oneline
+    local = log HEAD --oneline --decorate
+    ll = log --oneline --decorate
+[user]
+    name = Jeffery Jen
+    email = jeffery.jen@poddworks.io
+[push]
+    default = upstream
+[core]
+    editor = vim
+[svn]
+    rmdir = true
+[credential]
+    helper = store

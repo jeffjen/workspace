@@ -1,0 +1,7 @@
+# This file defines how command line interaction is used
+
+# turn off terminal flow control
+stty -ixon
+
+# set to vi mode
+set -o vi

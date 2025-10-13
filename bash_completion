@@ -1,0 +1,9 @@
+# include github git-completion
+if [ -f ~/.workspace/git-completion.bash ]; then
+    . ~/.workspace/git-completion.bash
+fi
+
+# include github git-prompt
+if [ -f ~/.workspace/git-prompt.sh ]; then
+    . ~/.workspace/git-prompt.sh
+fi

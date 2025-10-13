@@ -1,0 +1,44 @@
+# Local rc setup for work environment
+
+OS=`uname -s`
+if [ ${OS} = "Darwin" ]; then
+    alias ls="ls -h -G"
+    alias grep="grep -G"
+    alias egrep="egrep -G"
+    alias fgrep="fgrep -G"
+elif [ ${OS} = "Linux" ]; then
+    alias ls="ls -h --color=auto"
+    alias grep="grep --color=auto"
+    alias egrep="egrep --color=auto"
+    alias fgrep="fgrep --color=auto"
+fi
+
+__reboot_ps1 ()
+{
+    if [ -f /var/run/reboot-required ]; then
+        echo " (reboot)"
+    fi
+}
+
+__kubectl_current_context ()
+{
+    if command -v kubectl >/dev/null; then
+        if kubectl config current-context &>/dev/null; then
+            echo " (kubectl: $(kubectl config current-context))"
+        fi
+    fi
+}
+
+__aws_profile ()
+{
+    if [ ! -z ${AWS_PROFILE} ]; then
+        echo " (AWS: ${AWS_PROFILE})"
+    fi
+}
+
+__aws_s2a_profile ()
+{
+    if [ ! -z ${AWS_S2A_PROFILE} ]; then
+        echo " (S2A: ${AWS_S2A_PROFILE})"
+    fi
+}

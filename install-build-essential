@@ -1,0 +1,8 @@
+#!/bin/bash
+set -e
+
+apt-get update && apt-get install -y \
+    build-essential \
+    man \
+    zlib1g \
+    zlib1g-dev

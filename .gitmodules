@@ -1,0 +1,33 @@
+[submodule "vim/bundle/vim-fugitive"]
+	path = vim/bundle/vim-fugitive
+	url = https://github.com/tpope/vim-fugitive.git
+[submodule "vim/bundle/vim-git"]
+	path = vim/bundle/vim-git
+	url = https://github.com/tpope/vim-git.git
+[submodule "vim/bundle/vim-unimpaired"]
+	path = vim/bundle/vim-unimpaired
+	url = https://github.com/tpope/vim-unimpaired.git
+[submodule "vim/bundle/vim-javascript"]
+	path = vim/bundle/vim-javascript
+	url = https://github.com/pangloss/vim-javascript.git
+[submodule "vim/bundle/vim-javascript-syntax"]
+	path = vim/bundle/vim-javascript-syntax
+	url = https://github.com/jelera/vim-javascript-syntax.git
+[submodule "vim/bundle/localrc.vim"]
+	path = vim/bundle/localrc.vim
+	url = https://github.com/vim-scripts/localrc.vim.git
+[submodule "vim/bundle/a.vim"]
+	path = vim/bundle/a.vim
+	url = https://github.com/vim-scripts/a.vim
+[submodule "vim/bundle/vim-go"]
+	path = vim/bundle/vim-go
+	url = https://github.com/fatih/vim-go.git
+[submodule "vim/bundle/yats.vim"]
+	path = vim/bundle/yats.vim
+	url = https://github.com/HerringtonDarkholme/yats.vim.git
+[submodule "vim/bundle/ctrlp.vim"]
+	path = vim/bundle/ctrlp.vim
+	url = https://github.com/ctrlpvim/ctrlp.vim
+[submodule "vim/bundle/vim-airline"]
+	path = vim/bundle/vim-airline
+	url = https://github.com/vim-airline/vim-airline.git

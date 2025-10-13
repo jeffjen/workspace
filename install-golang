@@ -1,0 +1,11 @@
+#!/bin/bash
+set -e
+
+# install golang pacakge
+curl -sSL https://storage.googleapis.com/golang/go1.8.3.`uname -s | tr '[:upper:]' '[:lower:]'`-amd64.tar.gz | tar \
+    -C /usr/local \
+    -zxf -
+
+echo "export GOROOT=/usr/local/go" >>~/.workspaceenv/bash_env
+echo "export GOPATH=${HOME}/go" >>~/.workspaceenv/bash_env
+echo "export PATH=${HOME}/go/bin:/usr/local/go/bin:${PATH}" >>~/.workspaceenv/bash_env

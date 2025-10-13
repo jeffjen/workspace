@@ -1,0 +1,14 @@
+#!/bin/bash
+set -e
+
+apt-get update && apt-get install -y openjdk-7-jdk
+
+mkdir -p /usr/local/mvn
+
+# install maven
+mkdir -p /usr/local/mvn
+curl -sSL http://apache.stu.edu.tw/maven/maven-3/3.3.9/binaries/apache-maven-3.3.9-bin.tar.gz | tar \
+    --transform "s@apache-maven-3.3.9@./@" \
+    -zxf - -C /usr/local/mvn --
+
+echo "export PATH=/usr/local/mvn/bin:$PATH" >>~/.workspaceenv/bash_env
