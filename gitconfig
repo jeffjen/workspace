@@ -10,10 +10,18 @@
     name = Jeffery Jen
     email = jeffery.jen@poddworks.io
 [push]
-    default = upstream
+    default = current
 [core]
     editor = vim
 [svn]
     rmdir = true
 [credential]
     helper = store
+[commit]
+	gpgsign = true
+[tag]
+	gpgsign = true
+[gpg]
+	program = /usr/bin/true # [TODO] change to proper gpg tool
+[branch]
+	autoSetupMerge = false
