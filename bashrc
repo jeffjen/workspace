@@ -84,12 +84,12 @@ fi
 
 if [ "$color_prompt" = yes ]; then
     if test "$UID" -ne 0; then
-        PS1="\[\033[38;5;2m\]\u\[$(tput sgr0)\]\[\033[38;5;15m\]@\[$(tput sgr0)\]\[\033[38;5;4m\]\h\[$(tput sgr0)\]\[\033[38;5;15m\][\w] {\[$(tput sgr0)\]\[\033[38;5;2m\]\$?\[$(tput sgr0)\]\[\033[38;5;15m\]}\$(__git_ps1)\$(__reboot_ps1)\$(__aws_profile)\$(__aws_s2a_profile)\$(__kubectl_current_context)\n>> \[$(tput sgr0)\]"
+        PS1="\[\033[38;5;2m\]\u\[$(tput sgr0)\]\[\033[38;5;15m\]@\[$(tput sgr0)\]\[\033[38;5;4m\]\h\[$(tput sgr0)\]\[\033[38;5;15m\][\w] [shlvl:$SHLVL] {\[$(tput sgr0)\]\[\033[38;5;2m\]\$?\[$(tput sgr0)\]\[\033[38;5;15m\]}\$(__git_ps1)\$(__reboot_ps1)\$(__aws_profile)\$(__aws_s2a_profile)\$(__kubectl_current_context)\n>> \[$(tput sgr0)\]"
     else
-        PS1="\[\033[38;5;1m\]\u\[$(tput sgr0)\]\[\033[38;5;15m\]@\[$(tput sgr0)\]\[\033[38;5;4m\]\h\[$(tput sgr0)\]\[\033[38;5;15m\][\w] {\[$(tput sgr0)\]\[\033[38;5;2m\]\$?\[$(tput sgr0)\]\[\033[38;5;15m\]}\$(__git_ps1)\$(__reboot_ps1)\$(__aws_profile)\$(__aws_s2a_profile)\$(__kubectl_current_context)\n>> \[$(tput sgr0)\]"
+        PS1="\[\033[38;5;1m\]\u\[$(tput sgr0)\]\[\033[38;5;15m\]@\[$(tput sgr0)\]\[\033[38;5;4m\]\h\[$(tput sgr0)\]\[\033[38;5;15m\][\w] [shlvl:$SHLVL] {\[$(tput sgr0)\]\[\033[38;5;2m\]\$?\[$(tput sgr0)\]\[\033[38;5;15m\]}\$(__git_ps1)\$(__reboot_ps1)\$(__aws_profile)\$(__aws_s2a_profile)\$(__kubectl_current_context)\n>> \[$(tput sgr0)\]"
     fi
 else
-    PS1="\u@\h[\w] {\$?}\$(__git_ps1)\$(__machine_ps1)\$(__reboot_ps1)\$(__aws_profile)\$(__aws_s2a_profile)\$(__kubectl_current_context)\n>> \[$(tput sgr0)\]"
+    PS1="\u@\h[\w] [shlvl:$SHLVL] {\$?}\$(__git_ps1)\$(__machine_ps1)\$(__reboot_ps1)\$(__aws_profile)\$(__aws_s2a_profile)\$(__kubectl_current_context)\n>> \[$(tput sgr0)\]"
 fi
 PS2='.. '
 unset color_prompt force_color_prompt
